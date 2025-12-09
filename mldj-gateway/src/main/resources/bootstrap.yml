@@ -1,0 +1,51 @@
+server:
+  port: 8201
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: "gateway"
+  cloud:
+    nacos:
+      config:
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        server-addr: 192.168.148.128:8848
+        prefix: ${spring.application.name}
+      discovery:
+        namespace:
+        username: nacos
+        password: nacos
+        server-addr: 192.168.148.128:8848
+        heart-beat-interval: 1000
+        heart-beat-timeout: 1000
+        group: DEFAULT_GROUP
+    sentinel:
+      transport:
+        dashboard:
+        port: 8719
+        clientIp:
+      enabled: true
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              '[/**]':
+                          allowed-origins:
+                            -  "http://localhost:3000"
+                          allowed-methods:
+                            - "GET"
+                            - "POST"
+                            - "DELETE"
+                            - "PUT"
+                            - "OPTION"
+                          allowed-headers:
+                            - "*"
+                          allow-credentials: true
+                          max-age: 360000
