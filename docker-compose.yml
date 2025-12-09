@@ -1,0 +1,64 @@
+
+version: "3.8"
+
+services:
+  nacos:
+    image: nacos/nacos-server:latest
+    privileged: true
+    ports:
+      - "8088:8080"
+      - "9848:9848"
+      - "9849:9849"
+    environment:
+      MODE: standalone
+      TZ: Asia/Shanghai
+      # ==== Auth 相关 ====
+      NACOS_AUTH_TOKEN: "ZTNILYkyS2YhOEdkTFEyQHBYNFptN1F3IVVqNVJ0WXM="
+      NACOS_AUTH_IDENTITY_KEY: "ncs_identity"
+      NACOS_AUTH_IDENTITY_VALUE: "4d829d6e-f79d-4e52-a700-3d4e021c8fb4"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.12
+
+  mysql_1:
+    image: mysql:latest
+    privileged: true
+    ports:
+      - "3306:3306"
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - /data/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.10
+
+  redis:
+    image: redis:latest
+    privileged: true
+    ports:
+      - "6379:6379"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.11
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    privileged: true
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.13
+
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        server-addr: ${spring.cloud.nacos.server-addr}
