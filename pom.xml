@@ -22,6 +22,8 @@
         <module>mldj-model</module>
         <module>mldj-gateway</module>
         <module>mldj-web</module>
+        <module>mldj-generator</module>
+
     </modules>
 
     <properties>
@@ -193,6 +195,12 @@
         </dependencies>
     </dependencyManagement>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

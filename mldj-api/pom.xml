@@ -13,6 +13,13 @@
     <packaging>pom</packaging>
     <modules>
         <module>api-order</module>
+        <module>api-driver</module>
+        <module>api-system</module>
+        <module>api-mq</module>
+        <module>api-rules</module>
+        <module>api-customer</module>
+        <module>api-payment</module>
+        <module>api-map</module>
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -24,6 +31,11 @@
         <dependency>
             <groupId>org.ml</groupId>
             <artifactId>mldj-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ml</groupId>
+            <artifactId>common-utils</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- 服务调用feign -->

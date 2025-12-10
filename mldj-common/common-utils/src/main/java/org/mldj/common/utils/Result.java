@@ -1,5 +1,14 @@
 package org.mldj.common.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Result<T> implements Serializable {
     private int code;
     private String msg;

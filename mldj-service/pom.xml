@@ -13,6 +13,14 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-order</module>
+        <module>service-customer</module>
+        <module>service-driver</module>
+        <module>service-payment</module>
+        <module>service-system</module>
+        <module>service-rules</module>
+        <module>service-mq</module>
+        <module>service-map</module>
+
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

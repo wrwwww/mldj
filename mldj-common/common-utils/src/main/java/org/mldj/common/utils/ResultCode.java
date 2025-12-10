@@ -1,5 +1,7 @@
 package org.mldj.common.utils;
 
+import lombok.Getter;
+
 @Getter
 public enum ResultCode {
     SYS_ERROR(1001, "系统异常，请联系管理员!"),
