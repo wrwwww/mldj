@@ -26,4 +26,16 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> error(int code, String msg) {
         return new Result<>(code, msg, null);
     }
+
+    public Boolean isOk() {
+        return code == 200;
+    }
+
+    public Boolean isErr() {
+        return code != 200;
+    }
+
+    public T unwrap() {
+        return data;
+    }
 }

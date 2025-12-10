@@ -1,8 +1,12 @@
 package org.ml.mldj.driver.service;
 
+import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.config.WxConfig;
 import org.ml.mldj.model.dto.DriverLoginForm;
+import org.ml.mldj.model.entity.Driver;
+import org.ml.mldj.model.vo.LoginVO;
 import org.ml.mldj.model.vo.WxLoginInfoVO;
+import org.mldj.common.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,21 +22,26 @@ public class DriverService {
     @Autowired
     RestTemplate restTemplate;
     @Autowired
+    DriverFeignClient driverFeignClient;
 
 
-
-    public void login(DriverLoginForm form) {
+    public LoginVO login(DriverLoginForm form) {
         // 获取openid
         WxLoginInfoVO openid = getOpenid(form.getCode());
         if (openid != null) {
             // 查询数据库获取用户信息
-
+            Result<Driver> driver = driverFeignClient.getDriverByOpenId(openid.getOpenid());
             // 用户不存在就注册
+            if (driver != null && driver.isOk() && driver.getData() != null) {
+                Result<String> userId = driverFeignClient.registerNewDriver(form);
+            }
 
             // 用户存在就走登录
-
+            // 根据用户id生成token
+            //
+            return new LoginVO();
         }
-
+        throw new RuntimeException();
     }
 
     public WxLoginInfoVO getOpenid(String code) {

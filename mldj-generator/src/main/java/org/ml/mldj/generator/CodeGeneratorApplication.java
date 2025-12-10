@@ -7,14 +7,15 @@ import java.nio.file.Paths;
 
 public class CodeGeneratorApplication {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://192.168.117.129:3306/hxds_cst";
+        String url = "jdbc:mysql://192.168.117.129:3306/hxds_mis";
+//        String url = "jdbc:mysql://192.168.117.129:3306/hxds_cst";
         String username = "root";
         String password = "root";
         FastAutoGenerator.create(url, username, password)
                 .dataSourceConfig(builder -> builder.driverClassName("com.mysql.cj.jdbc.Driver"))
                 .globalConfig(builder -> builder
                         .author("mailang")
-                        .outputDir(Paths.get(System.getProperty("user.dir")) + "/src/main/java")
+                        .outputDir(Paths.get(System.getProperty("user.dir")) + "code/")
                         .commentDate("yyyy-MM-dd").enableSpringdoc()
                 )
                 .packageConfig(builder -> builder
