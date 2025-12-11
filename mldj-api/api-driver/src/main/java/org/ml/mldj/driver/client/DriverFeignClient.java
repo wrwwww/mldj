@@ -7,7 +7,7 @@ import org.ml.mldj.model.entity.Driver;
 import org.ml.mldj.model.vo.DriverSettingVO;
 import org.ml.mldj.model.vo.DriverVO;
 import org.ml.mldj.model.vo.PageVO;
-import org.mldj.common.utils.Result;
+import org.ml.mldj.common.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

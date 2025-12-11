@@ -1,4 +1,4 @@
-package org.mldj.common.utils;
+package org.ml.mldj.common.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

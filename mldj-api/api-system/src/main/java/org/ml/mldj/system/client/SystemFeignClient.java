@@ -1,6 +1,6 @@
 package org.ml.mldj.system.client;
 
-import org.mldj.common.utils.Result;
+import org.ml.mldj.common.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

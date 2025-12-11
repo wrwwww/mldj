@@ -6,7 +6,7 @@ import org.ml.mldj.model.dto.DriverLoginForm;
 import org.ml.mldj.model.entity.Driver;
 import org.ml.mldj.model.vo.LoginVO;
 import org.ml.mldj.model.vo.WxLoginInfoVO;
-import org.mldj.common.utils.Result;
+import org.ml.mldj.common.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
