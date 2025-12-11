@@ -1,0 +1,7 @@
+package org.ml.mldj.model.dto.customer;
+
+import lombok.Data;
+
+@Data
+public class SendNewOrderMessageForm {
+}

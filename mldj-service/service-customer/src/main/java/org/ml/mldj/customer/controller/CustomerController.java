@@ -1,7 +1,9 @@
-package org.dj.mldj.customer.controller;
+package org.ml.mldj.customer.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.dj.mldj.customer.service.CustomerService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.ml.mldj.customer.service.CustomerService;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.vo.CustomerVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +19,12 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     @Operation(description = "获取用户信息")
-    public Result<CustomerVO> queryCustomer(@PathVariable("customerId") String customerId) {
-        if (customerId == null) {
-//            return
-        }
+    public Result<CustomerVO> queryCustomer(@PathVariable("customerId") @Valid @NotNull(message = "参数不能为空") String customerId) {
         return Result.success(customerService.queryCustomer(customerId));
     }
 
     @PostMapping("/{customerId}")
-    public  Result<Boolean> updateCustomer(@PathVariable("customerId")String customerId){
+    public Result<Boolean> updateCustomer(@PathVariable("customerId") @Valid @NotNull(message = "参数不能为空") String customerId) {
         return null;
     }
 

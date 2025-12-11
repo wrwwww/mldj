@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ml.mldj.customer.mapper.CustomerCarMapper">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into hxds_cst.tb_customer_car(customer_id, car_plate, car_type)
+        VALUES (#{form.customerId},
+                #{form.carPlate}, #{form.carType})
+    </insert>
+
+
+    <delete id="delByIdAndCustomerId" >
+        delete
+        from hxds_cst.tb_customer_car t
+        where t.id = #{carId}
+          and t.customer_id = #{customerId}
+
+    </delete>
+    <select id="queryByCustomerId" resultType="org.ml.mldj.model.entity.CustomerCar">
+        select *
+        from hxds_cst.tb_customer_car t
+        where customer_id = #{customerId};
+    </select>
+</mapper>

@@ -1,6 +1,6 @@
-package org.dj.mldj.customer.service;
+package org.ml.mldj.customer.service;
 
-import org.dj.mldj.customer.mapper.CustomerMapper;
+import org.ml.mldj.customer.mapper.CustomerMapper;
 import org.ml.mldj.model.entity.Customer;
 import org.ml.mldj.model.vo.CustomerVO;
 import org.springframework.beans.BeanUtils;
