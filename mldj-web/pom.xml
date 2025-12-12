@@ -38,6 +38,11 @@
         </dependency>
         <dependency>
             <groupId>org.ml</groupId>
+            <artifactId>api-customer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ml</groupId>
             <artifactId>service-dependency</artifactId>
             <version>0.0.1-SNAPSHOT</version>
     <exclusions>

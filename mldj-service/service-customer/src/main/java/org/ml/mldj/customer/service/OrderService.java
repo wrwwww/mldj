@@ -1,16 +1,19 @@
 package org.ml.mldj.customer.service;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.map.client.MapFeignClient;
 import org.ml.mldj.model.dto.BefittingDriversForm;
 import org.ml.mldj.model.dto.OrderChargeForm;
 import org.ml.mldj.model.dto.OrderMileageAndMinuteForm;
+import org.ml.mldj.model.dto.PageForm;
 import org.ml.mldj.model.dto.customer.CreateNewOrderForm;
 import org.ml.mldj.model.dto.customer.OrderForm;
 import org.ml.mldj.model.dto.customer.SendNewOrderMessageForm;
 import org.ml.mldj.model.vo.BefittingDriversVO;
 import org.ml.mldj.model.vo.OrderChargeVO;
 import org.ml.mldj.model.vo.OrderMileageAndMinuteVO;
+import org.ml.mldj.model.vo.PageVO;
 import org.ml.mldj.model.vo.customer.OrderVO;
 import org.ml.mldj.order.client.OrderFeignClient;
 import org.ml.mldj.rules.client.RulesFeignClient;
@@ -55,10 +58,30 @@ public class OrderService {
         // 生成订单
         OrderForm orderForm = new OrderForm();
 
-        OrderVO orderVO=orderFeignClient.createOrder(orderForm).unwrap();
+        OrderVO orderVO = orderFeignClient.createOrder(orderForm).unwrap();
         // 发送订单给可接单的司机
         SendNewOrderMessageForm sendNewOrderMessageForm = new SendNewOrderMessageForm();
-        
+
         return null;
+    }
+
+    public OrderVO query(String orderId, String customerId) {
+
+        OrderVO vo = orderFeignClient.query(orderId, customerId).unwrap();
+        return vo;
+    }
+
+    public int delOrder(String orderId, String customerId) {
+        int unwrap = orderFeignClient.del(orderId, customerId).unwrap();
+        return 0;
+    }
+
+    public OrderVO hasCustomerCurrentOrder(String customerId) {
+        return null;
+    }
+
+    public PageVO<OrderVO> page(PageForm form, String customerId) {
+        PageVO<OrderVO> vo = orderFeignClient.page(form, customerId).unwrap();
+        return vo;
     }
 }

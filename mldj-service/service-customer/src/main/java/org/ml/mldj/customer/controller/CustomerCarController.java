@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.common.utils.ResultCode;
+import org.ml.mldj.common.utils.UserContext;
 import org.ml.mldj.customer.service.CustomerCarService;
 import org.ml.mldj.model.dto.customer.AddCustomerCarForm;
 import org.ml.mldj.model.entity.CustomerCar;
@@ -24,7 +25,7 @@ public class CustomerCarController {
     @Operation(summary = "添加客户车辆")
     public Result<?> add(@RequestBody @Valid AddCustomerCarForm form) {
         String customerId = "";
-        customerCarService.add(form,customerId);
+        customerCarService.add(form, customerId);
         return Result.success();
     }
 
@@ -38,9 +39,9 @@ public class CustomerCarController {
 
     @DeleteMapping("/{carId}")
     @Operation(summary = "删除客户车辆")
-    public Result<Boolean> delCustomerCarById(@PathVariable("carId") @Valid @NotNull(message = "参数不能为空") String carId) {
-        String customerId = "";
+    public Result<Integer> delCustomerCarById(@PathVariable("carId") @Valid @NotNull(message = "参数不能为空") String carId) {
+        String customerId = UserContext.getUserId();
         int rows = this.customerCarService.delByIdAndCustomerId(carId, customerId);
-        return Result.success();
+        return Result.success(rows);
     }
 }
