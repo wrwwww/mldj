@@ -7,4 +7,5 @@ public class UploadInitVO {
     String uploadId;
     String objectKey;
     String chunkCount;
+    long chunkSize;
 }

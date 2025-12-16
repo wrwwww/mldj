@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class UploadFileForm {
-    String md5;
+    String fileMd5;
     String fileName;
-    String fileType;
+    String fileExtension;
     int fileSize;
 }

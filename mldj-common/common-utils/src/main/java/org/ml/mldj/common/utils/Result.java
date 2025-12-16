@@ -35,13 +35,6 @@ public class Result<T> implements Serializable {
         return error(resultCode.getCode(), resultCode.getMsg());
     }
 
-    public Boolean isOk() {
-        return code == 200;
-    }
-
-    public Boolean isErr() {
-        return code != 200;
-    }
 
     public T unwrap() {
         if (code != 200) {

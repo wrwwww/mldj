@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class CreatePresignedRequestForm {
-    String upload;
-    String partNumber;
+    String uploadId;
+    int partNumber;
     String objectKey;
 
 }

@@ -7,11 +7,6 @@ import java.util.List;
 @Data
 public class CompletedMultipartUploadForm {
     String uploadId;
-    List<Part> uploadedParts;
+    List<Part> uploadedChunks;
     String objectKey;
-    @Data
-   public class Part {
-        int partNumber;
-        String ETag;
-    }
 }

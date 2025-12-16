@@ -21,19 +21,19 @@ public class PerRequestFilter extends OncePerRequestFilter {
         String userId = request.getHeader("X-User-Id");
         String userType = request.getHeader("X-User-Type");
 
-        if (userId == null || userType == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        // 校验该服务是否允许此 userType
-        if (!"USER".equals(userType)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        // 存 ThreadLocal
-        UserContext.setUserId(userId);
+//        if (userId == null || userType == null) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return;
+//        }
+//
+//        // 校验该服务是否允许此 userType
+//        if (!"USER".equals(userType)) {
+//            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//            return;
+//        }
+//
+//        // 存 ThreadLocal
+//        UserContext.setUserId(userId);
 
         try {
             filterChain.doFilter(request, response);
