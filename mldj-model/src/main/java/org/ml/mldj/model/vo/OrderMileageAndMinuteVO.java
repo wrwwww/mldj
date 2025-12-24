@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class OrderMileageAndMinuteVO {
-    String mileage;
-   int minute;
+    String distance;
+   String duration;
 }

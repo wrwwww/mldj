@@ -1,13 +1,20 @@
 package org.ml.mldj.customer.service;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.map.client.MapFeignClient;
-import org.ml.mldj.model.dto.*;
+import org.ml.mldj.model.dto.BefittingDriversForm;
+import org.ml.mldj.model.dto.CalOrderFeeForm;
+import org.ml.mldj.model.dto.OrderMileageAndMinuteForm;
+import org.ml.mldj.model.dto.PageForm;
 import org.ml.mldj.model.dto.customer.CreateNewOrderForm;
 import org.ml.mldj.model.dto.customer.OrderForm;
 import org.ml.mldj.model.dto.customer.SendNewOrderMessageForm;
-import org.ml.mldj.model.vo.*;
+import org.ml.mldj.model.dto.map.DriverFilter;
+import org.ml.mldj.model.dto.map.DriverLocation;
+import org.ml.mldj.model.dto.map.NearbyDriver;
+import org.ml.mldj.model.vo.CalOrderFeeVO;
+import org.ml.mldj.model.vo.OrderMileageAndMinuteVO;
+import org.ml.mldj.model.vo.PageVO;
 import org.ml.mldj.model.vo.customer.OrderVO;
 import org.ml.mldj.order.client.OrderFeignClient;
 import org.ml.mldj.rules.client.RulesFeignClient;
@@ -18,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -28,6 +36,8 @@ public class OrderService {
     RulesFeignClient rulesFeignClient;
     @Autowired
     MapFeignClient mapFeignClient;
+    @Autowired
+    MqFeignClient mqFeignClient;
 
     public HashMap createNewOrder(@Valid CreateNewOrderForm form) {
 
@@ -39,23 +49,62 @@ public class OrderService {
         // 利用里程和时间计算费用
 
         CalOrderFeeForm calOrderFeeForm = new CalOrderFeeForm();
-        calOrderFeeForm.setMileage(mileageAndMinuteVO.getMileage());
+        calOrderFeeForm.setMileage(mileageAndMinuteVO.getDuration());
         calOrderFeeForm.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:ss")));
         CalOrderFeeVO calOrderFeeVO = rulesFeignClient.calculateOrderFee(calOrderFeeForm).unwrap();
         // 查找可接单的司机
         BefittingDriversForm befittingDriversForm = new BefittingDriversForm();
         BeanUtils.copyProperties(orderMileageAndMinuteForm, befittingDriversForm);
-        befittingDriversForm.setMileage(mileageAndMinuteVO.getMileage());
+        befittingDriversForm.setMileage(mileageAndMinuteVO.getDistance());
 
-        BefittingDriversVO befittingDriversVO = mapFeignClient.searchBefittingDrivers(befittingDriversForm).unwrap();
+        List<NearbyDriver> unwrap = mapFeignClient.findNearbyDriversWithFilter(befittingDriversForm).unwrap();
+//                 unwrap.parallelStream()
+//                .map(nearby -> getDriverDetail(nearby.getDriverId()))
+//                .filter(Objects::nonNull)
+//                .filter(driver -> filterDriver(driver, filter))
+//                .sorted(Comparator.comparingDouble(driver ->
+//                        calculateDistance(centerLat, centerLng,
+//                                driver.getLatitude(), driver.getLongitude())))
+//                .limit(100)
+//                .collect(Collectors.toList());
         // 生成订单
         OrderForm orderForm = new OrderForm();
 
         OrderVO orderVO = orderFeignClient.createOrder(orderForm).unwrap();
         // 发送订单给可接单的司机
         SendNewOrderMessageForm sendNewOrderMessageForm = new SendNewOrderMessageForm();
+        List<String> list = unwrap.stream().map(nearbyDriver -> String.format("%s#%s", nearbyDriver.getDriverId(), nearbyDriver.getDistance())).toList();
+        sendNewOrderMessageForm.setDriversContent(list);
+        sendNewOrderMessageForm.setOrderId(orderVO.getOrderId());
+        sendNewOrderMessageForm.setMileage(mileageAndMinuteVO.getDuration());
+
 
         return null;
+    }
+
+    private boolean filterDriver(DriverLocation driver, DriverFilter filter) {
+        // 状态过滤
+        if (filter.getStatus() != null && driver.getStatus() != filter.getStatus()) {
+            return false;
+        }
+
+        // 评分过滤
+        if (filter.getMinRating() != null && driver.getRating() < filter.getMinRating()) {
+            return false;
+        }
+
+        // 车辆类型过滤
+        if (filter.getVehicleType() != null &&
+                !filter.getVehicleType().equals(driver.getVehicle().getModel())) {
+            return false;
+        }
+
+        // 是否忙碌
+        if (filter.isExcludeBusy() && driver.getCurrentOrderId() != null) {
+            return false;
+        }
+
+        return true;
     }
 
     public OrderVO query(String orderId, String customerId) {

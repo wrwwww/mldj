@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class OrderVO {
     String status;
+    String orderId;
 }
