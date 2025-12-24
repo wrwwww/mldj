@@ -1,0 +1,41 @@
+<!-- src/main/resources/META-INF/kmodule.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://www.drools.org/xsd/kmodule"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <!-- 折扣规则知识库 -->
+    <kbase name="discountKbase"
+           packages="rules.discount"
+           eventProcessingMode="stream"
+           equalsBehavior="equality">
+        <ksession name="discountSession"
+                  type="stateful"
+                  clockType="realtime"/>
+        <ksession name="discountStatelessSession"
+                  type="stateless"/>
+    </kbase>
+
+    <!-- 验证规则知识库 -->
+    <kbase name="validationKbase"
+           packages="rules.validation">
+        <ksession name="validationSession"
+                  type="stateful"/>
+    </kbase>
+
+    <!-- 所有规则知识库 -->
+    <kbase name="allRulesKbase"
+           packages="rules"
+           default="true">
+        <ksession name="allRulesSession"
+                  type="stateful"
+                  default="true"/>
+    </kbase>
+
+    <!-- 支持动态加载的知识库 -->
+    <kbase name="dynamicKbase"
+           packages="rules.dynamic"
+           includes="discountKbase">
+        <ksession name="dynamicSession"
+                  type="stateful"/>
+    </kbase>
+</kmodule>

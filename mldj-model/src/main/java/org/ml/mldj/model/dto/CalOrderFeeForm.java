@@ -3,10 +3,17 @@ package org.ml.mldj.model.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-public class OrderChargeForm {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class CalOrderFeeForm {
+
     @NotBlank(message = "mileage不能为空")
     @Pattern(regexp = "^[1-9]\\d*\\.\\d+$|^0\\.\\d*[1-9]\\d*$|^[1-9]\\d*$", message = "mileage内容不正确")
     @Schema(description = "代驾公里数")

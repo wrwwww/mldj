@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: "service-map"
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        server-addr: 192.168.117.129:8848
+        namespace: public
+
+      discovery:
+        enabled: true
+        namespace: public
+        username: nacos
+        password: VrYNf4sne0
+        server-addr: 192.168.117.129:8848
+        heart-beat-interval: 1000
+        heart-beat-timeout: 1000
+        group: DEFAULT_GROUP
+  config:
+    import:
+      - nacos:${spring.application.name}-dev?group=DEFAULT_GROUP&refresh=true
+
+#    sentinel:
+#      transport:
+#        dashboard:
+#        port: 8719
+#        clientIp:
+#      enabled: true
+logging:
+  level:
+#    com.alibaba.nacos: DEBUG
+    org.springframework.cloud: DEBUG
+rustfs:
+  s3:
+    endpoint: 192.168.117.129:9000
+    access-key:
+    secret-key:
+    init-bucket: true
+    bucket: ""
+gaode:
+  key: 48286d95d4d0122336137bc6ae30e59d
+  driving-url: https://restapi.amap.com/v3/direction/driving
+  geocode-url:

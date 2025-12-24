@@ -1,0 +1,8 @@
+package rules
+
+rule "vip discount"
+when
+    $order : Order(amount > 1000, vip == true)
+then
+    $order.setDiscount(0.8);
+end
