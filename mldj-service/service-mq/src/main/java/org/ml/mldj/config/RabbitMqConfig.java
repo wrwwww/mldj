@@ -1,29 +1,33 @@
 package org.ml.mldj.config;
 
-import com.rabbitmq.client.ConnectionFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties(prefix = "rabbitmq")
+@Configuration
 public class RabbitMqConfig {
-    private String host;
-
-    private int port;
-
-    private String username;
-
-    private String password;
     @Bean
-    public ConnectionFactory getFactory() {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-        factory.setPort(port);
-        // factory.setUsername(username);
-        // factory.setPassword(password);
-        return factory;
+    public FanoutExchange fanoutExchange() {
+        return ExchangeBuilder.fanoutExchange("order.exchange").build();
+    }
+
+    @Bean
+    public Queue queue() {
+        return new Queue("order.create");
+    }
+
+    @Bean
+    public Binding binding() {
+        return BindingBuilder.bind(queue()).to(fanoutExchange());
+    }
+
+//        @Bean
+//        public Exchange exchange2(){
+//        return ExchangeBuilder.
+//        }
+    @Bean
+    public Queue queue1(){
+        return new Queue("order.create1");
     }
 
 }

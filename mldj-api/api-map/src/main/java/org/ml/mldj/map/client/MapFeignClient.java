@@ -14,7 +14,5 @@ public interface MapFeignClient {
 
     Result<OrderMileageAndMinuteVO> estimateOrderMileageAndMinute(OrderMileageAndMinuteForm orderMileageAndMinuteForm);
 
-    Result<List<NearbyDriver>> findNearbyDriversWithFilter(BefittingDriversForm befittingDriversForm);
-
 
 }

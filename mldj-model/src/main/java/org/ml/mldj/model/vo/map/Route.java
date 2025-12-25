@@ -17,5 +17,5 @@ public class Route {
     /**
      * 算路方案详情
      */
-    private List<Paths> paths;
+    private List<Path> paths;
 }

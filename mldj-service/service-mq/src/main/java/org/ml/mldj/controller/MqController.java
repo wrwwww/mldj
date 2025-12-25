@@ -18,4 +18,7 @@ public class MqController {
 
         return Result.success();
     }
+
+
+
 }

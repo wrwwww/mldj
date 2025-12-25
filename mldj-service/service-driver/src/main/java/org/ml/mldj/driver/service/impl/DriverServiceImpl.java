@@ -3,6 +3,7 @@ package org.ml.mldj.driver.service.impl;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.ml.mldj.common.constant.RedisConst;
 import org.ml.mldj.driver.mapper.DriverMapper;
 import org.ml.mldj.driver.mapper.DriverSettingsMapper;
 import org.ml.mldj.driver.mapper.WalletMapper;
@@ -17,6 +18,7 @@ import org.ml.mldj.model.vo.DriverVO;
 import org.ml.mldj.model.vo.PageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,6 +39,8 @@ public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> impleme
     DriverSettingsMapper driverSettingsMapper;
     @Autowired
     WalletMapper walletMapper;
+    @Autowired
+    RedisTemplate<String,String> redisTemplate;
 
     public Driver getDriverByOpenId(String openid) {
         return null;
@@ -92,5 +96,14 @@ public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> impleme
         Page<DriverVO> page = new Page<>(form.getPageNum(), form.getPageSize());
         Page<DriverVO> res = driverMapper.queryDriverPage(page, form);
         return PageVO.buildPageVO(res);
+    }
+
+    @Override
+    public void offline(String driverId) {
+        // 清理Redis记录
+        String key =  RedisConst.DRIVER_INFO_KEY_PREFIX + driverId;
+        redisTemplate.delete(key);
+        // todo 更新司机状态为离线
+
     }
 }

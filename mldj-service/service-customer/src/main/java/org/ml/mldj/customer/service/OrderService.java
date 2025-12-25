@@ -1,6 +1,7 @@
 package org.ml.mldj.customer.service;
 
 import jakarta.validation.Valid;
+import org.ml.mldj.common.constant.MqConst;
 import org.ml.mldj.map.client.MapFeignClient;
 import org.ml.mldj.model.dto.BefittingDriversForm;
 import org.ml.mldj.model.dto.CalOrderFeeForm;
@@ -18,6 +19,7 @@ import org.ml.mldj.model.vo.PageVO;
 import org.ml.mldj.model.vo.customer.OrderVO;
 import org.ml.mldj.order.client.OrderFeignClient;
 import org.ml.mldj.rules.client.RulesFeignClient;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class OrderService {
     @Autowired
     MapFeignClient mapFeignClient;
     @Autowired
-    MqFeignClient mqFeignClient;
+    RabbitTemplate rabbitTemplate;
 
     public HashMap createNewOrder(@Valid CreateNewOrderForm form) {
 
@@ -77,10 +79,15 @@ public class OrderService {
         sendNewOrderMessageForm.setDriversContent(list);
         sendNewOrderMessageForm.setOrderId(orderVO.getOrderId());
         sendNewOrderMessageForm.setMileage(mileageAndMinuteVO.getDuration());
-
+        sendCreateOrder(sendNewOrderMessageForm);
 
         return null;
     }
+
+    private void sendCreateOrder(SendNewOrderMessageForm form) {
+        rabbitTemplate.convertAndSend(MqConst.EXCHANGE_ORDER, MqConst.QUEUE_ORDER_CREATED, form);
+    }
+
 
     private boolean filterDriver(DriverLocation driver, DriverFilter filter) {
         // 状态过滤

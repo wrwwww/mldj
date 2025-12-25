@@ -23,20 +23,16 @@ spring:
     import:
       - nacos:${spring.application.name}-dev?group=DEFAULT_GROUP&refresh=true
 
-#    sentinel:
-#      transport:
-#        dashboard:
-#        port: 8719
-#        clientIp:
-#      enabled: true
+
 logging:
   level:
     #    com.alibaba.nacos: DEBUG
     org.springframework.cloud: DEBUG
 rustfs:
   s3:
-    endpoint: 192.168.117.129:9000
-    access-key:
-    secret-key:
+    endpoint: http://192.168.117.129:9000
+    access-key: sdPQM9lER4bLDnNrgoO0
+    secret-key: tvlRM3f45D7TcmIkQp20e6wArhSFdJXHuUVKqGYo
     init-bucket: true
-    bucket: ""
+    bucket: "upload"
+    chunk-size: 5MB

@@ -28,4 +28,6 @@ public interface IDriverService extends IService<Driver> {
     DriverSettingVO queryDriverSetting(String driverId);
 
     PageVO<DriverVO> queryDriverPage(DriverPageForm form);
+
+    void offline(String driverId);
 }

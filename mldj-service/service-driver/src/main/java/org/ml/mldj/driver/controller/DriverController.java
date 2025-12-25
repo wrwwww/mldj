@@ -48,5 +48,11 @@ public class DriverController {
         PageVO<DriverVO> page = driverService.queryDriverPage(form);
         return Result.success(page);
     }
+    @PutMapping("/offline/{driverId}")
+    @Operation(description = "司机离线")
+    Result<?> Offline(@PathVariable("driverId") String driverId){
+        driverService.offline(driverId);
+        return Result.success();
+    }
 
 }

@@ -1,7 +1,7 @@
-package org.ml.mldj.map.service;
+package org.ml.mldj.driver.service.impl;
 
+import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.dto.map.DriverFilter;
-import org.ml.mldj.model.dto.map.DriverLocation;
 import org.ml.mldj.model.dto.map.NearbyDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
@@ -15,15 +15,19 @@ import org.springframework.data.redis.domain.geo.Metrics;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static org.ml.mldj.common.constant.RedisConst.DRIVER_GEO_KEY;
+import static org.ml.mldj.common.constant.RedisConst.DRIVER_INFO_KEY_PREFIX;
 
 @Service
 public class DriverLocationService {
 
-    private static final String DRIVER_GEO_KEY = "drivers:geo";
-    private static final String DRIVER_INFO_KEY_PREFIX = "driver:info:";
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     private final GeoOperations<String, String> geoOps;
@@ -61,7 +65,7 @@ public class DriverLocationService {
      * @param limit     返回数量限制
      * @return 附近的司机列表
      */
-    public List<NearbyDriver> findNearbyDrivers(
+    public Result<List<NearbyDriver>> findNearbyDrivers(
             double centerLng, double centerLat,
             double radius, int limit) {
 
@@ -82,7 +86,7 @@ public class DriverLocationService {
         );
 
         if (results != null) {
-            return results.getContent().stream()
+            return Result.success(results.getContent().stream()
                     .map(result -> {
                         RedisGeoCommands.GeoLocation<String> location = result.getContent();
                         Distance distance = result.getDistance();
@@ -95,15 +99,15 @@ public class DriverLocationService {
                                 .longitude(point.getX())
                                 .build();
                     })
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
-        return new ArrayList<>();
+        return Result.success();
     }
 
     /**
      * 查找附近司机（带过滤条件）
      */
-    public List<NearbyDriver> findNearbyDriversWithFilter(
+    public Result<List<NearbyDriver>> findNearbyDriversWithFilter(
             double centerLng, double centerLat,
             double radius, int limit,
             DriverFilter filter) {
@@ -123,6 +127,4 @@ public class DriverLocationService {
 //                .limit(limit)
 //                .collect(Collectors.toList());
     }
-
-
 }

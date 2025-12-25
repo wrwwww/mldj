@@ -9,10 +9,7 @@ import org.ml.mldj.model.vo.DriverVO;
 import org.ml.mldj.model.vo.PageVO;
 import org.ml.mldj.common.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @FeignClient("service-driver")
@@ -32,5 +29,8 @@ public interface DriverFeignClient {
     @GetMapping("/page")
     @Operation(description = "分页查询司机信息")
     Result<PageVO<DriverVO>> queryDriverPage(@RequestParam DriverPageForm form);
+
+    @PutMapping("/offline/{driverId}")
+    Result<?> Offline(@PathVariable("driverId") String driverId);
 
 }
