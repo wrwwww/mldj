@@ -2,6 +2,7 @@ package org.ml.mldj.customer.service;
 
 import jakarta.validation.Valid;
 import org.ml.mldj.common.constant.MqConst;
+import org.ml.mldj.driver.client.DriverLocationFeignClient;
 import org.ml.mldj.map.client.MapFeignClient;
 import org.ml.mldj.model.dto.BefittingDriversForm;
 import org.ml.mldj.model.dto.CalOrderFeeForm;
@@ -40,6 +41,8 @@ public class OrderService {
     MapFeignClient mapFeignClient;
     @Autowired
     RabbitTemplate rabbitTemplate;
+    @Autowired
+    DriverLocationFeignClient driverLOcationFeignClient;
 
     public HashMap createNewOrder(@Valid CreateNewOrderForm form) {
 
@@ -58,17 +61,9 @@ public class OrderService {
         BefittingDriversForm befittingDriversForm = new BefittingDriversForm();
         BeanUtils.copyProperties(orderMileageAndMinuteForm, befittingDriversForm);
         befittingDriversForm.setMileage(mileageAndMinuteVO.getDistance());
+        List<NearbyDriver> unwrap = driverLOcationFeignClient.findNearbyDriversWithFilter(befittingDriversForm).unwrap();
 
-        List<NearbyDriver> unwrap = mapFeignClient.findNearbyDriversWithFilter(befittingDriversForm).unwrap();
-//                 unwrap.parallelStream()
-//                .map(nearby -> getDriverDetail(nearby.getDriverId()))
-//                .filter(Objects::nonNull)
-//                .filter(driver -> filterDriver(driver, filter))
-//                .sorted(Comparator.comparingDouble(driver ->
-//                        calculateDistance(centerLat, centerLng,
-//                                driver.getLatitude(), driver.getLongitude())))
-//                .limit(100)
-//                .collect(Collectors.toList());
+
         // 生成订单
         OrderForm orderForm = new OrderForm();
 

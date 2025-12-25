@@ -21,10 +21,6 @@ public class RabbitMqConfig {
         return BindingBuilder.bind(queue()).to(fanoutExchange());
     }
 
-//        @Bean
-//        public Exchange exchange2(){
-//        return ExchangeBuilder.
-//        }
     @Bean
     public Queue queue1(){
         return new Queue("order.create1");

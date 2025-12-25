@@ -68,6 +68,11 @@
             <artifactId>api-order</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.ml</groupId>
+            <artifactId>api-driver</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

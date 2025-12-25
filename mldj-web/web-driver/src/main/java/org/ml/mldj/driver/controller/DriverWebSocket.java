@@ -7,15 +7,17 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ml.mldj.common.constant.MqConst;
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.client.DriverLocationFeignClient;
+import org.ml.mldj.model.WebSocketMessage;
+import org.ml.mldj.model.dto.customer.SendNewOrderMessageForm;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +39,7 @@ public class DriverWebSocket {
     DriverFeignClient driverFeignClient;
 
     // 保存所有连接的司机
-    private static final ConcurrentHashMap<Long, Session> driverSessions =
+    private static final ConcurrentHashMap<String, Session> driverSessions =
             new ConcurrentHashMap<>();
 
     // Redis键前缀
@@ -50,7 +52,7 @@ public class DriverWebSocket {
      * 连接建立
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("driverId") Long driverId) {
+    public void onOpen(Session session, @PathParam("driverId") String driverId) {
         driverSessions.put(driverId, session);
 
         // 记录到Redis，支持分布式部署
@@ -72,7 +74,7 @@ public class DriverWebSocket {
      * 收到消息
      */
     @OnMessage
-    public void onMessage(String message, Session session, @PathParam("driverId") Long driverId) {
+    public void onMessage(String message, Session session, @PathParam("driverId") String driverId) {
         log.info("收到司机消息: driverId={}, message={}", driverId, message);
 
         try {
@@ -89,15 +91,15 @@ public class DriverWebSocket {
                     handleLocationUpdate(driverId, wsMessage.getData());
                     break;
 
-                case "ORDER_GRAB":
-                    // 司机抢单
-                    handleOrderGrab(driverId, wsMessage.getData());
-                    break;
-
-                case "ORDER_CANCEL":
-                    // 司机取消订单
-                    handleOrderCancel(driverId, wsMessage.getData());
-                    break;
+//                case "ORDER_GRAB":
+//                    // 司机抢单
+//                    handleOrderGrab(driverId, wsMessage.getData());
+//                    break;
+//
+//                case "ORDER_CANCEL":
+//                    // 司机取消订单
+//                    handleOrderCancel(driverId, wsMessage.getData());
+//                    break;
             }
         } catch (Exception e) {
             log.error("处理WebSocket消息失败", e);
@@ -116,6 +118,44 @@ public class DriverWebSocket {
 
         log.info("司机断开WebSocket: driverId={}", driverId);
     }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = MqConst.QUEUE_ORDER_CREATED, durable = "true"),
+            exchange = @Exchange(value = MqConst.EXCHANGE_ORDER),
+            key = {MqConst.ROUTING_PAY_SUCCESS}
+    ))
+    public void orderCreated(SendNewOrderMessageForm form) {
+        // 将消息发送给form中的司机
+        form.getDriversContent().forEach(driver -> {
+            String[] split = driver.split("#");
+            String driverId = split[0];
+            String distinct = split[1];
+            Session session = driverSessions.get(driverId);
+            if (session != null && session.isOpen()) {
+                HashMap<String, Object> objectObjectHashMap = getStringObjectHashMap(form, driverId, distinct);
+                WebSocketMessage msg = new WebSocketMessage("ORDER_NOTIFICATION", objectObjectHashMap, LocalDateTime.now());
+                log.info("WebSocket订单通知发送成功: driverId={}, orderId={}", driverId, form.getOrderId());
+                sendMessage(driverId, msg);
+            } else {
+                log.warn("司机不在线或连接已关闭: driverId={}", driverId);
+            }
+        });
+
+
+    }
+
+    private static HashMap<String, Object> getStringObjectHashMap(SendNewOrderMessageForm form, String driverId, String distinct) {
+        HashMap<String, Object> objectObjectHashMap = new HashMap<>();
+        objectObjectHashMap.put("driverId", driverId);
+        objectObjectHashMap.put("distinct", distinct);
+        objectObjectHashMap.put("orderId", form.getOrderId());
+        objectObjectHashMap.put("to", form.getTo());
+        objectObjectHashMap.put("from", form.getFrom());
+        objectObjectHashMap.put("mileage", form.getMileage());
+        objectObjectHashMap.put("minute", form.getMinute());
+        return objectObjectHashMap;
+    }
+
 
 //    /**
 //     * 发送订单通知给司机
@@ -165,8 +205,8 @@ public class DriverWebSocket {
     /**
      * 广播消息给多个司机
      */
-    public void broadcastToDrivers(List<Long> driverIds, WebSocketMessage message) {
-        for (Long driverId : driverIds) {
+    public void broadcastToDrivers(List<String> driverIds, WebSocketMessage message) {
+        for (String driverId : driverIds) {
             sendMessage(driverId, message);
         }
     }
@@ -174,7 +214,7 @@ public class DriverWebSocket {
     /**
      * 发送消息
      */
-    private void sendMessage(Long driverId, WebSocketMessage message) {
+    private void sendMessage(String driverId, WebSocketMessage message) {
         try {
             Session session = driverSessions.get(driverId);
             if (session != null && session.isOpen()) {
@@ -188,14 +228,18 @@ public class DriverWebSocket {
     /**
      * 处理心跳
      */
-    private void handleHeartbeat(Long driverId) {
+    private void handleHeartbeat(String driverId) {
         // 更新心跳时间
         String key = "driver:heartbeat:" + driverId;
         redisTemplate.opsForValue().set(key, String.valueOf(System.currentTimeMillis()),
                 70, TimeUnit.SECONDS); // 70秒过期
 
         // 回复心跳
-        sendMessage(driverId, new WebSocketMessage.WebSocketMessageBuilder().type("HEARTBEAT_RESPONSE").data(null).timestamp(LocalDateTime.now()).build());
+        WebSocketMessage webSocketMessage = new WebSocketMessage();
+        webSocketMessage.setData(null);
+        webSocketMessage.setTimestamp(LocalDateTime.now());
+        webSocketMessage.setType("HEARTBEAT_RESPONSE");
+        sendMessage(driverId, webSocketMessage);
 
     }
 
@@ -214,16 +258,4 @@ public class DriverWebSocket {
             log.error("处理位置更新失败", e);
         }
     }
-}
-
-// WebSocket消息封装
-@Data
-@AllArgsConstructor
-@Builder
-@NoArgsConstructor
-class WebSocketMessage {
-    private String type;        // 消息类型
-    //    private String content;     // 消息内容
-    private Object data;        // 消息数据
-    private LocalDateTime timestamp = LocalDateTime.now();
 }
