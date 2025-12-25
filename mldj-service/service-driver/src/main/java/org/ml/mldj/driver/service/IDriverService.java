@@ -1,6 +1,7 @@
 package org.ml.mldj.driver.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.dto.DriverLoginForm;
 import org.ml.mldj.model.dto.DriverPageForm;
 import org.ml.mldj.model.entity.Driver;
@@ -30,4 +31,6 @@ public interface IDriverService extends IService<Driver> {
     PageVO<DriverVO> queryDriverPage(DriverPageForm form);
 
     void offline(String driverId);
+
+    Result<?> snatchingOrder(String driverId, String orderId);
 }

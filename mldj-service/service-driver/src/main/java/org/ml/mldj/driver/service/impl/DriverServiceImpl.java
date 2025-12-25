@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.ml.mldj.common.constant.RedisConst;
+import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.driver.mapper.DriverMapper;
 import org.ml.mldj.driver.mapper.DriverSettingsMapper;
 import org.ml.mldj.driver.mapper.WalletMapper;
@@ -40,7 +41,7 @@ public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> impleme
     @Autowired
     WalletMapper walletMapper;
     @Autowired
-    RedisTemplate<String,String> redisTemplate;
+    RedisTemplate<String, String> redisTemplate;
 
     public Driver getDriverByOpenId(String openid) {
         return null;
@@ -101,9 +102,11 @@ public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> impleme
     @Override
     public void offline(String driverId) {
         // 清理Redis记录
-        String key =  RedisConst.DRIVER_INFO_KEY_PREFIX + driverId;
+        String key = RedisConst.DRIVER_INFO_KEY_PREFIX + driverId;
         redisTemplate.delete(key);
         // todo 更新司机状态为离线
 
     }
+
+
 }

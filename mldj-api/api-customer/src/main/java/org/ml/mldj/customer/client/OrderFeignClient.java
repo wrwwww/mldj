@@ -5,11 +5,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.dto.customer.CreateNewOrderForm;
-import org.ml.mldj.model.vo.customer.OrderVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @FeignClient("service-customer")
 public interface OrderFeignClient {

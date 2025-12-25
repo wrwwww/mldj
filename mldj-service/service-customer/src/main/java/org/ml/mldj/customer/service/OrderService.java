@@ -17,7 +17,7 @@ import org.ml.mldj.model.dto.map.NearbyDriver;
 import org.ml.mldj.model.vo.CalOrderFeeVO;
 import org.ml.mldj.model.vo.OrderMileageAndMinuteVO;
 import org.ml.mldj.model.vo.PageVO;
-import org.ml.mldj.model.vo.customer.OrderVO;
+import org.ml.mldj.model.order.vo.OrderVO;
 import org.ml.mldj.order.client.OrderFeignClient;
 import org.ml.mldj.rules.client.RulesFeignClient;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

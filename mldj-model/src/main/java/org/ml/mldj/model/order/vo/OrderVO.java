@@ -1,4 +1,4 @@
-package org.ml.mldj.model.vo.customer;
+package org.ml.mldj.model.order.vo;
 
 import lombok.Data;
 

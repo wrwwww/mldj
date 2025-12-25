@@ -8,7 +8,7 @@ import org.ml.mldj.customer.service.OrderService;
 import org.ml.mldj.model.dto.PageForm;
 import org.ml.mldj.model.dto.customer.CreateNewOrderForm;
 import org.ml.mldj.model.vo.PageVO;
-import org.ml.mldj.model.vo.customer.OrderVO;
+import org.ml.mldj.model.order.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

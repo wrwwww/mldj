@@ -54,5 +54,10 @@ public class DriverController {
         driverService.offline(driverId);
         return Result.success();
     }
+    @GetMapping("/snatching/order")
+    @Operation(description = "司机抢单")
+    Result<?> snatchingOrder(String driverId, String orderId){
+        return driverService.snatchingOrder(driverId,orderId);
+    }
 
 }
