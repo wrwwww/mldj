@@ -1,5 +1,6 @@
 package org.ml.mldj.order.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.ml.mldj.model.order.entity.OrderComment;
 import org.ml.mldj.order.mapper.OrderCommentMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-12-26
  */
 @Service
-public class OrderCommentServiceImpl extends ServiceImpl<OrderCommentMapper, OrderComment> implements IOrderCommentService {
+public class OrderCommentServiceImpl extends ServiceImpl<OrderCommentMapper, OrderComment> implements IService<OrderComment> {
 
 }

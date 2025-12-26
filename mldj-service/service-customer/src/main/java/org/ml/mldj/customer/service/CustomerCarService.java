@@ -5,13 +5,21 @@ import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.common.utils.ResultCode;
 import org.ml.mldj.customer.mapper.CustomerCarMapper;
 import org.ml.mldj.model.customer.dto.AddCustomerCarForm;
-import org.ml.mldj.model.entity.CustomerCar;
+import org.ml.mldj.model.customer.entity.CustomerCar;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * <p>
+ * 客户车辆信息表 服务实现类
+ * </p>
+ *
+ * @author mailang
+ * @since 2025-12-26
+ */
 @Service
 public class CustomerCarService {
     @Autowired

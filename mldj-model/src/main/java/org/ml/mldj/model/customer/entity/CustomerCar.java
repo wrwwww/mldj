@@ -33,13 +33,13 @@ public class CustomerCar implements Serializable {
      */
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 客户ID
      */
     @Schema(description = "客户ID")
-    private Long customerId;
+    private String customerId;
 
     /**
      * 车牌号

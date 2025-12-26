@@ -1,7 +1,7 @@
 package org.ml.mldj.driver.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.ml.mldj.model.mldj.entity.DriverAccount;
+import org.ml.mldj.model.driver.entity.DriverAccount;
 
 /**
  * <p>

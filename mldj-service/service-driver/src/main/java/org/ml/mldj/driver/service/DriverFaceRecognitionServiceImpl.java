@@ -1,6 +1,6 @@
-package org.ml.mldj.driver.service.impl;
+package org.ml.mldj.driver.service;
 
-import org.ml.mldj.driver.service.IDriverFaceRecognitionService;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.ml.mldj.model.driver.entity.DriverFaceRecognition;
 import org.ml.mldj.driver.mapper.DriverFaceRecognitionMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-12-26
  */
 @Service
-public class DriverFaceRecognitionServiceImpl extends ServiceImpl<DriverFaceRecognitionMapper, DriverFaceRecognition> implements IDriverFaceRecognitionService {
+public class DriverFaceRecognitionServiceImpl extends ServiceImpl<DriverFaceRecognitionMapper, DriverFaceRecognition> implements IService<DriverFaceRecognition> {
 
 }

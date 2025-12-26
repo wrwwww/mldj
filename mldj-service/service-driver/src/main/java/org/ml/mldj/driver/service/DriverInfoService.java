@@ -1,56 +1,53 @@
-package org.ml.mldj.driver.service.impl;
+package org.ml.mldj.driver.service;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.ml.mldj.common.constant.RedisConst;
-import org.ml.mldj.driver.mapper.DriverMapper;
-import org.ml.mldj.driver.mapper.DriverSettingsMapper;
-import org.ml.mldj.driver.service.IDriverService;
+import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.driver.mapper.DriverSetMapper;
+import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.driver.dto.DriverLoginForm;
 import org.ml.mldj.model.driver.dto.DriverPageForm;
-import org.ml.mldj.model.entity.Driver;
-import org.ml.mldj.model.entity.DriverSettings;
-import org.ml.mldj.model.entity.Wallet;
+import org.ml.mldj.model.driver.entity.DriverAccount;
+import org.ml.mldj.model.driver.entity.DriverInfo;
+import org.ml.mldj.driver.mapper.DriverInfoMapper;
+import org.ml.mldj.model.driver.entity.DriverSet;
 import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.ml.mldj.model.driver.vo.DriverVO;
-import org.ml.mldj.model.common.PageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 /**
  * <p>
- * 代驾司机表 服务实现类
+ * 司机信息表 服务实现类
  * </p>
  *
  * @author mailang
- * @since 2025-12-10
+ * @since 2025-12-26
  */
 @Service
-public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> implements IDriverService {
+public class DriverInfoService {
+
     @Autowired
-    DriverMapper driverMapper;
+    DriverInfoMapper driverInfoMapper;
     @Autowired
-    DriverSettingsMapper driverSettingsMapper;
-    @Autowired
-    WalletMapper walletMapper;
+    DriverSetMapper driverSettingsMapper;
+//    @Autowired
+//    WalletMapper walletMapper;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
-
-    public Driver getDriverByOpenId(String openid) {
+    //    @Autowired
+    public DriverInfo getDriverByOpenId(String openid) {
         return null;
     }
 
-    @Override
     public String registerNewDriver(DriverLoginForm form) {
-        Driver driver = new Driver();
+        DriverInfo driver = new DriverInfo();
         BeanUtils.copyProperties(form, driver);
-        driverMapper.insert(driver);
-        Driver driverByOpenId = getDriverByOpenId(driver.getOpenId());
+        driverInfoMapper.insert(driver);
+        DriverInfo driverByOpenId = getDriverByOpenId(driver.getWxOpenId());
         // 设置司机的默认设置
         JSONObject json = new JSONObject();
 
@@ -59,45 +56,43 @@ public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> impleme
         json.put("orderDistance", 0);
         json.put("rangeDistance", 5);
         json.put("autoAccept", false);
-        DriverSettings driverSettings = new DriverSettings();
+        DriverSet driverSettings = new DriverSet();
         driverSettings.setDriverId(driverByOpenId.getId());
-        driverSettings.setSettings(json.toString());
+//        driverSettings.(json.toString());
         driverSettingsMapper.insert(driverSettings);
+        DriverAccount driverAccount = new DriverAccount();
+        driverAccount.setDriverId(driverByOpenId.getId());
 
-        Wallet wallet = new Wallet();
-        wallet.setDriverId(driverByOpenId.getId());
-        wallet.setBalance(new BigDecimal(0));
-        wallet.setPassword(null);
-        walletMapper.insert(wallet);
+//        Wallet wallet = new Wallet();
+//        wallet.setDriverId(driverByOpenId.getId());
+//        wallet.setBalance(new BigDecimal(0));
+//        wallet.setPassword(null);
+//        walletMapper.insert(wallet);
 
-        return driverByOpenId.getOpenId();
+        return driverByOpenId.getWxOpenId();
     }
 
-    @Override
     public DriverVO query(String driverId) {
-        Driver driver = driverMapper.selectById(driverId);
+        DriverInfo driver = driverInfoMapper.selectById(driverId);
         DriverVO driverVO = new DriverVO();
         BeanUtils.copyProperties(driver, driverVO);
         return driverVO;
     }
 
-    @Override
     public DriverSettingVO queryDriverSetting(String driverId) {
-        DriverSettings driverSettings = driverSettingsMapper.selectById(driverId);
+        DriverSet driverSettings = driverSettingsMapper.selectById(driverId);
         DriverSettingVO driverSettingVO = new DriverSettingVO();
         BeanUtils.copyProperties(driverSettings, driverSettingVO);
         return driverSettingVO;
     }
 
-    @Override
     public PageVO<DriverVO> queryDriverPage(DriverPageForm form) {
         // 创建分页对象，指定当前页和每页大小
         Page<DriverVO> page = new Page<>(form.getPageNum(), form.getPageSize());
-        Page<DriverVO> res = driverMapper.queryDriverPage(page, form);
+        Page<DriverVO> res = driverInfoMapper.queryDriverPage(page, form);
         return PageVO.buildPageVO(res);
     }
 
-    @Override
     public void offline(String driverId) {
         // 清理Redis记录
         String key = RedisConst.DRIVER_INFO_KEY_PREFIX + driverId;
@@ -106,5 +101,7 @@ public class DriverServiceImpl extends ServiceImpl<DriverMapper, Driver> impleme
 
     }
 
-
+    public Result<?> snatchingOrder(String driverId, String orderId) {
+        return null;
+    }
 }

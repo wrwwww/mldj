@@ -3,7 +3,7 @@ package org.ml.mldj.customer.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.ml.mldj.model.entity.CustomerCar;
+import org.ml.mldj.model.customer.entity.CustomerCar;
 
 import java.util.List;
 

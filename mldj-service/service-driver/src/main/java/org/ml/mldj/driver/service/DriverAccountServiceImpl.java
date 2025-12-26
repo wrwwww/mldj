@@ -1,6 +1,6 @@
-package org.ml.mldj.driver.service.impl;
+package org.ml.mldj.driver.service;
 
-import org.ml.mldj.driver.service.IDriverAccountService;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.ml.mldj.model.driver.entity.DriverAccount;
 import org.ml.mldj.driver.mapper.DriverAccountMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-12-26
  */
 @Service
-public class DriverAccountServiceImpl extends ServiceImpl<DriverAccountMapper, DriverAccount> implements IDriverAccountService {
+public class DriverAccountServiceImpl extends ServiceImpl<DriverAccountMapper, DriverAccount> implements IService<DriverAccount> {
 
 }

@@ -1,4 +1,4 @@
-package org.ml.mldj.driver.service.impl;
+package org.ml.mldj.driver.service;
 
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.map.dto.DriverFilter;
