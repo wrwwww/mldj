@@ -1,0 +1,16 @@
+package org.ml.mldj.system.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.ml.mldj.model.system.entity.SysUserRole;
+
+/**
+ * <p>
+ * 用户角色关联表 Mapper 接口
+ * </p>
+ *
+ * @author mailang
+ * @since 2025-12-26
+ */
+public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
+
+}
