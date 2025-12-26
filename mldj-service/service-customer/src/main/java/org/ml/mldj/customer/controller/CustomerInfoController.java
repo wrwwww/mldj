@@ -5,12 +5,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.customer.service.CustomerInfoService;
+import org.ml.mldj.model.customer.dto.UpdateCustomerForm;
 import org.ml.mldj.model.customer.vo.CustomerVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -33,9 +31,9 @@ public class CustomerInfoController {
         return Result.success(customerService.queryCustomer(customerId));
     }
 
-    @PostMapping("/{customerId}")
-    public Result<Boolean> updateCustomer(@PathVariable("customerId") @Valid @NotNull(message = "参数不能为空") String customerId) {
-        return null;
+    @PostMapping("/")
+    public Result<Boolean> updateCustomer(@RequestBody @Valid UpdateCustomerForm form) {
+        return Result.success(customerService.UpdateCustomerInfo(form));
     }
 
 

@@ -1,5 +1,7 @@
 package org.ml.mldj.customer.service;
 
+import jakarta.validation.Valid;
+import org.ml.mldj.model.customer.dto.UpdateCustomerForm;
 import org.ml.mldj.model.customer.entity.CustomerInfo;
 import org.ml.mldj.customer.mapper.CustomerInfoMapper;
 import org.ml.mldj.model.customer.vo.CustomerVO;
@@ -26,5 +28,10 @@ public class CustomerInfoService {
         BeanUtils.copyProperties(customer, customerVO);
         return customerVO;
 
+    }
+
+    public Boolean UpdateCustomerInfo(UpdateCustomerForm form) {
+        customerInfoMapper.update(form);
+        return null;
     }
 }

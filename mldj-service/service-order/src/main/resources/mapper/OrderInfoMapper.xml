@@ -7,7 +7,7 @@
         update order set driver_id=#{driverId}, accept_time=NOW()
         where order_id=#{orderId};
     </update>
-    <select id="queryOrderById" resultType="org.ml.mldj.model.order.entity.Order">
+    <select id="queryOrderById" resultType="org.ml.mldj.model.order.entity.OrderInfo">
         select * from order where order_id=#{orderId}
     </select>
     <select id="page" resultType="org.ml.mldj.model.order.vo.OrderVO">

@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.ml.mldj.customer.mapper.CustomerInfoMapper">
 
+    <update id="update">
+        update mailang.customer_info
+            <if test="">
+
+            </if>
+    </update>
 </mapper>

@@ -9,7 +9,7 @@ import org.ml.mldj.common.utils.ResultCode;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.order.dto.OrderPageForm;
-import org.ml.mldj.model.order.entity.Order;
+import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.order.vo.OrderVO;
 import org.ml.mldj.order.mapper.OrderInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,11 +66,11 @@ public class OrderInfoService {
         return Result.success(null, "抢单成功");
     }
 
-    public Order query(String orderId) {
+    public OrderInfo query(String orderId) {
         // todo 从redis中拿订单详情
 
         // 从数据库中获取订单详情
-        Order order = orderInfoMapper.queryOrderById(orderId);
+        OrderInfo order = orderInfoMapper.queryOrderById(orderId);
 
         return order;
     }
