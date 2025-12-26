@@ -1,16 +1,15 @@
 package org.ml.mldj.order.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.ml.mldj.common.constant.RedisConst;
 import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.common.utils.ResultCode;
-import org.ml.mldj.model.dto.customer.OrderForm;
+import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.order.entity.Order;
-import org.ml.mldj.model.order.form.OrderPageForm;
-import org.ml.mldj.model.vo.PageVO;
+import org.ml.mldj.model.order.dto.OrderPageForm;
+import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.order.vo.OrderVO;
 import org.ml.mldj.order.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;

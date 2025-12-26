@@ -2,9 +2,9 @@ package org.ml.mldj.order.client;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.dto.PageForm;
-import org.ml.mldj.model.dto.customer.OrderForm;
-import org.ml.mldj.model.vo.PageVO;
+import org.ml.mldj.model.common.PageForm;
+import org.ml.mldj.model.customer.dto.OrderForm;
+import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.order.vo.OrderVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

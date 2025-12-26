@@ -12,7 +12,7 @@ import org.ml.mldj.common.constant.MqConst;
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.client.DriverLocationFeignClient;
 import org.ml.mldj.model.WebSocketMessage;
-import org.ml.mldj.model.dto.customer.SendNewOrderMessageForm;
+import org.ml.mldj.model.customer.dto.SendNewOrderMessageForm;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;

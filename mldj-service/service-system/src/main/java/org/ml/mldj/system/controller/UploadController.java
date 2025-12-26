@@ -2,8 +2,11 @@ package org.ml.mldj.system.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.dto.*;
-import org.ml.mldj.model.vo.UploadInitResp;
+import org.ml.mldj.model.common.AbortUploadReq;
+import org.ml.mldj.model.common.CompleteUploadReq;
+import org.ml.mldj.model.common.UploadInitReq;
+import org.ml.mldj.model.common.UploadedPartVO;
+import org.ml.mldj.model.common.UploadInitResp;
 import org.ml.mldj.system.service.MultipartUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 

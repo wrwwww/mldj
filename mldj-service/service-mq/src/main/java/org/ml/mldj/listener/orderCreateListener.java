@@ -1,7 +1,7 @@
 package org.ml.mldj.listener;
 
 import org.ml.mldj.common.constant.MqConst;
-import org.ml.mldj.model.dto.customer.SendNewOrderMessageForm;
+import org.ml.mldj.model.customer.dto.SendNewOrderMessageForm;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;

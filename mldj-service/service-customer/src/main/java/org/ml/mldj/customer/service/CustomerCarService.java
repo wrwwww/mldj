@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.common.utils.ResultCode;
 import org.ml.mldj.customer.mapper.CustomerCarMapper;
-import org.ml.mldj.model.dto.customer.AddCustomerCarForm;
+import org.ml.mldj.model.customer.dto.AddCustomerCarForm;
 import org.ml.mldj.model.entity.CustomerCar;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

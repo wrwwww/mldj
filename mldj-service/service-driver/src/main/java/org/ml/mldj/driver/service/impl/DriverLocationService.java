@@ -1,8 +1,8 @@
 package org.ml.mldj.driver.service.impl;
 
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.dto.map.DriverFilter;
-import org.ml.mldj.model.dto.map.NearbyDriver;
+import org.ml.mldj.model.map.dto.DriverFilter;
+import org.ml.mldj.model.map.dto.NearbyDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Distance;
@@ -15,7 +15,6 @@ import org.springframework.data.redis.domain.geo.Metrics;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

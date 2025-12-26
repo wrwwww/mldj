@@ -1,14 +1,13 @@
 package org.ml.mldj.driver.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.dto.DriverLoginForm;
-import org.ml.mldj.model.dto.DriverPageForm;
+import org.ml.mldj.model.driver.dto.DriverLoginForm;
+import org.ml.mldj.model.driver.dto.DriverPageForm;
 import org.ml.mldj.model.entity.Driver;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.ml.mldj.model.vo.DriverSettingVO;
-import org.ml.mldj.model.vo.DriverVO;
-import org.ml.mldj.model.vo.PageVO;
+import org.ml.mldj.model.driver.vo.DriverSettingVO;
+import org.ml.mldj.model.driver.vo.DriverVO;
+import org.ml.mldj.model.common.PageVO;
 
 /**
  * <p>

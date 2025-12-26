@@ -2,10 +2,10 @@ package org.ml.mldj.driver.service;
 
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.config.WxConfig;
-import org.ml.mldj.model.dto.DriverLoginForm;
+import org.ml.mldj.model.driver.dto.DriverLoginForm;
 import org.ml.mldj.model.entity.Driver;
-import org.ml.mldj.model.vo.LoginVO;
-import org.ml.mldj.model.vo.WxLoginInfoVO;
+import org.ml.mldj.model.common.LoginVO;
+import org.ml.mldj.model.common.WxLoginInfoVO;
 import org.ml.mldj.common.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

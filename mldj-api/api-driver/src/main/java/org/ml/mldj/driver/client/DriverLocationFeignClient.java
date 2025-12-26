@@ -2,8 +2,8 @@ package org.ml.mldj.driver.client;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.dto.BefittingDriversForm;
-import org.ml.mldj.model.dto.map.NearbyDriver;
+import org.ml.mldj.model.customer.dto.BefittingDriversForm;
+import org.ml.mldj.model.map.dto.NearbyDriver;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;

@@ -1,9 +1,9 @@
 package org.ml.mldj.system.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ml.mldj.model.dto.UploadInitReq;
-import org.ml.mldj.model.dto.UploadedPartVO;
-import org.ml.mldj.model.vo.UploadInitResp;
+import org.ml.mldj.model.common.UploadInitReq;
+import org.ml.mldj.model.common.UploadedPartVO;
+import org.ml.mldj.model.common.UploadInitResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

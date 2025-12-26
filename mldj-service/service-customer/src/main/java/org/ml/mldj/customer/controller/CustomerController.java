@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.customer.service.CustomerService;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.vo.CustomerVO;
+import org.ml.mldj.model.customer.vo.CustomerVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

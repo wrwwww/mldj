@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.customer.client.CustomerCarFeignClient;
-import org.ml.mldj.model.dto.customer.AddCustomerCarForm;
+import org.ml.mldj.model.customer.dto.AddCustomerCarForm;
 import org.ml.mldj.model.entity.CustomerCar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

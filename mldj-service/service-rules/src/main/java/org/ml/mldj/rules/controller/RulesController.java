@@ -2,12 +2,11 @@ package org.ml.mldj.rules.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.dto.CalOrderFeeForm;
-import org.ml.mldj.model.dto.CalculateSplitForm;
-import org.ml.mldj.model.vo.CalOrderFeeVO;
-import org.ml.mldj.model.vo.CalculateSplitVO;
+import org.ml.mldj.model.customer.dto.CalOrderFeeForm;
+import org.ml.mldj.model.customer.dto.CalculateSplitForm;
+import org.ml.mldj.model.order.vo.CalOrderFeeVO;
+import org.ml.mldj.model.order.vo.CalculateSplitVO;
 import org.ml.mldj.rules.service.RulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

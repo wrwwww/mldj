@@ -5,10 +5,10 @@ import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.common.utils.HttpUtils;
 import org.ml.mldj.map.client.GaodeFeignClient;
 import org.ml.mldj.map.config.GaoDeConfig;
-import org.ml.mldj.model.dto.OrderMileageAndMinuteForm;
-import org.ml.mldj.model.dto.map.DistanceForm;
-import org.ml.mldj.model.vo.OrderMileageAndMinuteVO;
-import org.ml.mldj.model.vo.map.DistanceVO;
+import org.ml.mldj.model.order.dto.OrderMileageAndMinuteForm;
+import org.ml.mldj.model.map.dto.DistanceForm;
+import org.ml.mldj.model.order.vo.OrderMileageAndMinuteVO;
+import org.ml.mldj.model.map.dto.DistanceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

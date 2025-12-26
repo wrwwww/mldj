@@ -2,9 +2,9 @@ package org.ml.mldj.driver.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.ml.mldj.model.dto.DriverPageForm;
+import org.ml.mldj.model.driver.dto.DriverPageForm;
 import org.ml.mldj.model.entity.Driver;
-import org.ml.mldj.model.vo.DriverVO;
+import org.ml.mldj.model.driver.vo.DriverVO;
 
 /**
  * <p>

@@ -2,10 +2,8 @@ package org.ml.mldj.customer.client;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.ml.mldj.model.dto.customer.UpdateCustomerForm;
-import org.ml.mldj.model.vo.CustomerVO;
+import org.ml.mldj.model.customer.dto.UpdateCustomerForm;
+import org.ml.mldj.model.customer.vo.CustomerVO;
 import org.ml.mldj.common.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
