@@ -25,6 +25,13 @@ public class CustomerInfoController {
     @Autowired
     CustomerInfoService customerService;
 
+    @GetMapping("login")
+    public Result<?> login() {
+
+    }
+
+
+
     @GetMapping("/{customerId}")
     @Operation(description = "获取用户信息")
     public Result<CustomerVO> queryCustomer(@PathVariable("customerId") @Valid @NotNull(message = "参数不能为空") String customerId) {
@@ -35,6 +42,7 @@ public class CustomerInfoController {
     public Result<Boolean> updateCustomer(@RequestBody @Valid UpdateCustomerForm form) {
         return Result.success(customerService.UpdateCustomerInfo(form));
     }
+
 
 
 }

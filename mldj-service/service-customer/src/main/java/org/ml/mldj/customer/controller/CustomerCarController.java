@@ -22,7 +22,7 @@ public class CustomerCarController {
     @PostMapping("")
     @Operation(summary = "添加客户车辆")
     public Result<?> add(@RequestBody @Valid AddCustomerCarForm form) {
-        String customerId = "";
+        String customerId = UserContext.getUserId();
         customerCarService.add(form, customerId);
         return Result.success();
     }

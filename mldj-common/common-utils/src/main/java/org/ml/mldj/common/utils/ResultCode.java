@@ -10,7 +10,15 @@ public enum ResultCode {
     DATA_NO_EXISTS(2003, "数据不存在"),
     EXISTS_SON(2004, "存在子项目"),
 
-    ORDER_EXIST(3000, "订单已经被抢走了");
+    ORDER_EXIST(3000, "订单已经被抢走了"),
+
+    TOKEN_EXPIRED(1, "JWT令牌已过期"),
+    TOKEN_INVALID(2, "不支持的令牌格式"),
+    TOKEN_MALFORMED(3, "令牌格式错误"),
+    TOKEN_SIGNATURE(4, "令牌签名无效"),
+    TOKEN_ILLEGALARGUMENT(5, "令牌参数错误"),
+
+    ;
 
 
     private final int code;
