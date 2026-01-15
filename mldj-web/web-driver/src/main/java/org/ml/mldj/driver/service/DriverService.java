@@ -1,16 +1,19 @@
 package org.ml.mldj.driver.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.ml.mldj.common.utils.JwtUtil;
+import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.config.WxConfig;
-import org.ml.mldj.model.driver.dto.DriverBasicInfoUpdateForm;
-import org.ml.mldj.model.driver.dto.DriverLoginForm;
-import org.ml.mldj.model.driver.dto.DriverRegistrationForm;
-import org.ml.mldj.model.driver.dto.DriverWorkStatusUpdateForm;
-import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.common.LoginVO;
 import org.ml.mldj.model.common.WxLoginInfoVO;
-import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.model.driver.dto.DriverBasicInfoUpdateForm;
+import org.ml.mldj.model.driver.dto.WxLoginDTO;
+import org.ml.mldj.model.driver.entity.DriverInfo;
+import org.ml.mldj.model.driver.entity.DriverSet;
+import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.ml.mldj.model.driver.vo.DriverVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 public class DriverService {
 
@@ -27,23 +31,30 @@ public class DriverService {
     RestTemplate restTemplate;
     @Autowired
     DriverFeignClient driverFeignClient;
+    @Autowired
+    JwtUtil jwtUtil;
 
-
-    public LoginVO login(DriverLoginForm form) {
+    public LoginVO login(WxLoginDTO form) {
         // 获取openid
         WxLoginInfoVO openid = getOpenid(form.getCode());
         if (openid != null) {
             // 查询数据库获取用户信息
-            Result<DriverInfo> driver = driverFeignClient.getDriverByOpenId(openid.getOpenid());
-            // 用户不存在就注册
-            if (driver.isOk() && driver.getData() != null) {
-                Result<String> userId = driverFeignClient.registerNewDriver(form);
-            }
-
+            DriverInfo driver = driverFeignClient.getDriverByOpenId(openid.getOpenid()).unwrap();
+            String userId = null;
             // 用户存在就走登录
+            if (driver == null) {
+                // 用户不存在就注册
+                driver = driverFeignClient.registerNewDriver(form).unwrap();
+            }
+            userId = driver.getId();
             // 根据用户id生成token
-            //
-            return new LoginVO();
+            String token = jwtUtil.generateAccessToken(userId);
+            String refreshToken = jwtUtil.generateRefreshToken(userId);
+            LoginVO loginVO = new LoginVO();
+            BeanUtils.copyProperties(driver, loginVO);
+            loginVO.setToken(token);
+            loginVO.setRefreshToken(refreshToken);
+            return loginVO;
         }
         throw new RuntimeException();
     }
@@ -74,12 +85,10 @@ public class DriverService {
         }
     }
 
-    public DriverVO getDriverById(Long driverId) {
-        Result<DriverInfo> driverResult = driverFeignClient.getDriverById(driverId);
-        if (driverResult == null || !driverResult.isOk() || driverResult.getData() == null) {
-            throw new RuntimeException("Failed to retrieve driver information");
-        }
-        return convertDriverToVO(driverResult.getData());
+    public Result<DriverVO> getDriverById(String driverId) {
+        Result<DriverInfo> driverResult = driverFeignClient.queryDriverByDriverId(driverId);
+        DriverInfo unwrap = driverResult.unwrap();
+        return Result.success(convertDriverToVO(unwrap));
     }
 
     private DriverVO convertDriverToVO(DriverInfo driver) {
@@ -87,17 +96,11 @@ public class DriverService {
         driverVO.setId(driver.getId());
         driverVO.setName(driver.getName());
         driverVO.setPhone(driver.getPhone());
-        driverVO.setLicenseNumber(driver.getLicenseNumber());
-        driverVO.setWorkStatus(driver.getWorkStatus());
+        driverVO.setDriverLicenseNo(driver.getDriverLicenseNo());
+        driverVO.setWorkStatus(driver.getStatus());
         return driverVO;
     }
 
-    public void register(DriverRegistrationForm form) {
-        Result<String> registrationResult = driverFeignClient.registerNewDriver(form);
-        if (registrationResult == null || !registrationResult.isOk()) {
-            throw new RuntimeException("Driver registration failed");
-        }
-    }
 
     public void updateBasicInfo(Long driverId, DriverBasicInfoUpdateForm form) {
         Result<Void> updateResult = driverFeignClient.updateDriverBasicInfo(driverId, form);
@@ -106,10 +109,18 @@ public class DriverService {
         }
     }
 
-    public void updateWorkStatus(Long driverId, DriverWorkStatusUpdateForm form) {
-        Result<Void> updateResult = driverFeignClient.updateDriverWorkStatus(driverId, form);
-        if (updateResult == null || !updateResult.isOk()) {
-            throw new RuntimeException("Driver work status update failed");
-        }
+    public Result<?> offline(String driverId) {
+        return driverFeignClient.Offline(driverId);
+    }
+
+    public Result<?> online(String driverId) {
+        return driverFeignClient.Online(driverId);
+    }
+
+    public DriverSettingVO queryDriverSetting(String driverId) {
+        Result<DriverSet> driverSettings = driverFeignClient.queryDriverSettings(driverId);
+        DriverSettingVO driverSettingVO = new DriverSettingVO();
+        BeanUtils.copyProperties(driverSettings, driverSettingVO);
+        return driverSettingVO;
     }
 }

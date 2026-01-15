@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.ml.mldj.common.exception.BizException;
 
 import java.io.Serializable;
+import java.util.function.Consumer;
 
 @Getter
 @Setter

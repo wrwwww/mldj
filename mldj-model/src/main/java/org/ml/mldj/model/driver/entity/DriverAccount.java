@@ -34,13 +34,13 @@ public class DriverAccount implements Serializable {
      */
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 司机ID
      */
     @Schema(description = "司机ID")
-    private Long driverId;
+    private String driverId;
 
     /**
      * 账户总额

@@ -18,7 +18,7 @@ public enum ResultCode {
     TOKEN_SIGNATURE(4, "令牌签名无效"),
     TOKEN_ILLEGALARGUMENT(5, "令牌参数错误"),
 
-    ;
+    USER_EXITS(1, "用函数不存在");
 
 
     private final int code;

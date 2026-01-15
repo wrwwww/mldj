@@ -34,7 +34,7 @@ public class DriverInfo implements Serializable {
      */
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 微信OpenID

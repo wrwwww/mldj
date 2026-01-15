@@ -64,6 +64,14 @@ public class JwtUtil {
         return buildToken(claims, userDetails.getUsername(), expiration);
     }
 
+    public String generateAccessToken(String id) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERID, id);
+        claims.put(CLAIM_KEY_TYPE, "access");
+
+        return buildToken(claims, id, expiration);
+    }
+
     /**
      * 生成刷新令牌
      */

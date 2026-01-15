@@ -1,9 +1,10 @@
 package org.ml.mldj.driver.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.RequiredArgsConstructor;
 import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.driver.mapper.DriverAuthMapper;
-import org.ml.mldj.driver.mapper.DriverInfoMapper;
 import org.ml.mldj.model.driver.DriverAuthStatus;
 import org.ml.mldj.model.driver.dto.*;
 import org.ml.mldj.model.driver.entity.DriverAuth;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 public class DriverAuthService {
 
     private final DriverAuthMapper repository;
-    private final ThirdPartyKycClient kycClient =new ThirdPartyKycClient();
+    private final ThirdPartyKycClient kycClient = new ThirdPartyKycClient();
 
     @Transactional
     public Long startAuth(Long driverId) {
@@ -33,11 +34,15 @@ public class DriverAuthService {
         DriverAuth auth = getAuth(authId, DriverAuthStatus.INIT);
 
         IdCardOcrResult ocr = kycClient.ocrIdCard(req);
-//
+
         auth.setIdName(ocr.getName());
         auth.setIdNumber(ocr.getIdNumber());
         auth.setStatus(DriverAuthStatus.ID_UPLOADED);
-        repository.updateById(auth);
+
+        LambdaUpdateWrapper<DriverAuth> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(DriverAuth::getId, auth.getId()).eq(DriverAuth::getStatus, DriverAuthStatus.ID_UPLOADED);
+        updateWrapper.set(DriverAuth::getIdNumber, auth.getIdNumber()).set(DriverAuth::getStatus, DriverAuthStatus.ID_UPLOADED).set(DriverAuth::getIdName, auth.getIdName());
+        repository.update(updateWrapper);
     }
 
     @Transactional
@@ -56,11 +61,9 @@ public class DriverAuthService {
             return;
         }
 
-        auth.setLicenseNumber(result.getLicenseNumber());
-        auth.setLicenseType(result.getLicenseType());
-        auth.setLicenseExpireAt(result.getExpireDate());
-        auth.setLicenseVerified(true);
-        auth.setStatus(DriverAuthStatus.LICENSE_UPLOADED);
+        LambdaUpdateWrapper<DriverAuth> driverAuthLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        driverAuthLambdaUpdateWrapper.eq(DriverAuth::getDriverId, auth.getId()).eq(DriverAuth::getStatus, DriverAuthStatus.LICENSE_UPLOADED);
+        driverAuthLambdaUpdateWrapper.set(DriverAuth::getStatus, DriverAuthStatus.LICENSE_UPLOADED).set(DriverAuth::getLicenseNumber, auth.getLicenseNumber()).set(DriverAuth::getLicenseType, auth.getLicenseType()).set(DriverAuth::getLicenseExpireAt, auth.getLicenseExpireAt());
     }
 
     public FaceLivenessStartResp startFaceLiveness(Long authId) {
@@ -72,15 +75,16 @@ public class DriverAuthService {
         resp.setBizToken(token.getBizToken());
         resp.setActions(token.getActions());
 
-        auth.setStatus(DriverAuthStatus.FACE_UPLOADED);
-        repository.updateById(auth);
+        LambdaUpdateWrapper<DriverAuth> driverAuthLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        driverAuthLambdaUpdateWrapper.eq(DriverAuth::getStatus, DriverAuthStatus.FACE_UPLOADED).eq(DriverAuth::getDriverId,auth.getId()).set(DriverAuth::getStatus, DriverAuthStatus.FACE_UPLOADED).set(DriverAuth::getFaceSimilarity,auth.getFaceSimilarity());
+
         return resp;
     }
 
     @Transactional
     public void handleFaceResult(Long authId, FaceLivenessResultReq req) {
         DriverAuth auth = repository.selectById(authId);
-        if (auth==null){
+        if (auth == null) {
             throw new BizException("<UNK>");
         }
 
@@ -102,13 +106,11 @@ public class DriverAuthService {
     }
 
     private DriverAuth getAuth(Long authId, DriverAuthStatus expect) {
-        DriverAuth auth = repository.selectById(authId);
+        LambdaQueryWrapper<DriverAuth> driverAuthLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        driverAuthLambdaQueryWrapper.eq(DriverAuth::getId, authId).eq(DriverAuth::getStatus, expect);
+        DriverAuth auth = repository.selectOne(driverAuthLambdaQueryWrapper);
         if (auth == null) {
-            throw new BizException("认证不存在");
-        }
-
-        if (auth.getStatus() != expect) {
-            throw new BizException("认证状态非法");
+            throw new BizException("认证状态异常");
         }
         return auth;
     }

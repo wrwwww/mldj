@@ -6,10 +6,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class DriverVO {
-    private Long id;
+    private String id;
     private String name;
     private String phone;
-    private String licenseNumber;
+    private String driverLicenseNo;
     private Integer workStatus;
 
 }

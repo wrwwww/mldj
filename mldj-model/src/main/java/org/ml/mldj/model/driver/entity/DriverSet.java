@@ -34,13 +34,13 @@ public class DriverSet implements Serializable {
      */
     @Schema(description = "主键ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 司机ID
      */
     @Schema(description = "司机ID")
-    private Long driverId;
+    private String driverId;
 
     /**
      * 服务状态：0-下班，1-上班
