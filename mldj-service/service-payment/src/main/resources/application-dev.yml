@@ -1,0 +1,9 @@
+wechat:
+  pay:
+    v3:
+      app-id: wx1234567890abcdef
+      mch-id: 1230000109
+      api-v3-key: your-api-v3-key
+      private-key-path: classpath:/cert/apiclient_key.pem
+      serial-no: 444F4864BA9B7C8E
+      notify-url: https://your-domain.com/api/payment/notify

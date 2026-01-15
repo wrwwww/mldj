@@ -42,4 +42,9 @@ public class Result<T> implements Serializable {
         }
         return data;
     }
+    public boolean isOk(){
+        return code == 200;
+    } public boolean isErr(){
+        return code != 200;
+    }
 }
