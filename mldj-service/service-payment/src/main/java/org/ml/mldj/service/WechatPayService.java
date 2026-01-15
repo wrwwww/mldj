@@ -1,14 +1,17 @@
 package org.ml.mldj.service;
 
+import com.wechat.pay.java.core.notification.RequestParam;
 import com.wechat.pay.java.service.payments.jsapi.JsapiServiceExtension;
-import com.wechat.pay.java.service.payments.jsapi.model.*;
+import com.wechat.pay.java.service.payments.jsapi.model.Amount;
+import com.wechat.pay.java.service.payments.jsapi.model.Payer;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest;
+import com.wechat.pay.java.service.payments.jsapi.model.PrepayWithRequestPaymentResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.ml.mldj.config.WechatPayConfig;
-import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.payments.dto.WechatPayOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.security.PublicKey;
 
 @Service
 public class WechatPayService {
@@ -49,5 +52,19 @@ public class WechatPayService {
     }
 
 
+    public ResponseEntity<?> process(HttpServletRequest request) {
+        String serial = request.getHeader("Wechatpay-Serial");
+        String signature = request.getHeader("Wechatpay-Signature");
+        String timestamp = request.getHeader("Wechatpay-Timestamp");
+        String nonce = request.getHeader("Wechatpay-Nonce");
 
+        RequestParam requestParam = new RequestParam.Builder()
+                .serialNumber(serial)
+                .nonce(nonce)
+                .signature(signature)
+                .timestamp(timestamp)
+                .body(request.getInputStream().toString())
+                .build();
+        return ResponseEntity.ok().build();
+    }
 }

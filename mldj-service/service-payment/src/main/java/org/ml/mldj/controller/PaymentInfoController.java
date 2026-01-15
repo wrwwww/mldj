@@ -8,6 +8,7 @@ import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.payments.dto.WechatPayOrder;
 import org.ml.mldj.service.WechatPayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
@@ -28,23 +29,8 @@ public class PaymentInfoController {
 
     @Operation(description = "接受微信回调")
     @PostMapping("/callback/wechat/pay")
-    public String notify(HttpServletRequest request) {
-
-        PayNotify notify = parseAndVerify(request);
-
-        Payment payment = paymentRepo.findByTradeNo(notify.getOutTradeNo());
-
-        if (payment.isSuccess()) {
-            return "SUCCESS";
-        }
-
-        payment.success();
-
-        paymentRepo.save(payment);
-
-        eventBus.publish(new PaySuccessEvent(payment.getOrderId()));
-
-        return "SUCCESS";
+    public ResponseEntity<?> notify(HttpServletRequest request) {
+        return wechatPayService.process(request);
     }
 
     @PostMapping("/create")
