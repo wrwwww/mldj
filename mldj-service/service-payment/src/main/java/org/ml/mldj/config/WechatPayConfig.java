@@ -27,7 +27,7 @@ public class WechatPayConfig {
     /**
      * 商户号
      */
-    private String mchId;
+    private String merchantId;
 
     /**
      * 商户API V3密钥（32位）
@@ -37,7 +37,7 @@ public class WechatPayConfig {
     /**
      * 商户API证书序列号
      */
-    private String serialNo;
+    private String merchantSerialNumber;
 
     /**
      * 商户私钥文件路径
@@ -91,16 +91,19 @@ public class WechatPayConfig {
 
 
     @Bean
-    public JsapiServiceExtension jsapiServiceExtension() {
-        // 初始化商户配置
-        Config config =
-                new RSAAutoCertificateConfig.Builder()
-                        .merchantId(mchId)
-                        // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
-                        .privateKeyFromPath(privateKeyPath)
-//                        .merchantSerialNumber(merchantSerialNumber)
-                        .apiV3Key(apiV3Key)
-                        .build();
+    public Config getConfig() {
+        return new RSAAutoCertificateConfig.Builder()
+                .merchantId(merchantId)
+                // 使用 com.wechat.pay.java.core.util 中的函数从本地文件中加载商户私钥，商户私钥会用来生成请求的签名
+                .privateKeyFromPath(privateKeyPath)
+                .merchantSerialNumber(merchantSerialNumber)
+                .apiV3Key(apiV3Key)
+                .build();
+    }
+
+    @Bean
+    public JsapiServiceExtension jsapiServiceExtension(Config config) {
+
         // 初始化服务
         return
                 new JsapiServiceExtension.Builder()
@@ -110,39 +113,4 @@ public class WechatPayConfig {
     }
 
 
-    /**
-     * 获取API域名
-     */
-    public String getApiDomain() {
-        return sandbox ? "https://api.mch.weixin.qq.com/sandboxnew"
-                : "https://api.mch.weixin.qq.com";
-    }
-
-    /**
-     * 获取支付API URL
-     */
-    public String getPayApiUrl() {
-        return getApiDomain() + "/v3/pay/transactions/jsapi";
-    }
-
-    /**
-     * 获取退款API URL
-     */
-    public String getRefundApiUrl() {
-        return getApiDomain() + "/v3/refund/domestic/refunds";
-    }
-
-    /**
-     * 获取查询订单API URL
-     */
-    public String getQueryApiUrl() {
-        return getApiDomain() + "/v3/pay/transactions/out-trade-no/";
-    }
-
-    /**
-     * 获取证书下载API URL
-     */
-    public String getCertApiUrl() {
-        return getApiDomain() + "/v3/certificates";
-    }
 }

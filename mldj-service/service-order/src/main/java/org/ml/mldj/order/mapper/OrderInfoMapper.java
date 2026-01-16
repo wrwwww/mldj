@@ -18,7 +18,6 @@ import org.ml.mldj.model.order.vo.OrderVO;
  */
 @Mapper
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
-    int updateOrderDriver(@Param("orderId") String orderId, @Param("driverId") String driverId);
 
     OrderInfo queryOrderById(@Param("orderId") String orderId);
 

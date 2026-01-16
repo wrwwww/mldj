@@ -7,6 +7,7 @@ import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.order.vo.OrderVO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient("service-order")
@@ -21,4 +22,7 @@ public interface OrderFeignClient {
     Result<Integer> del(String orderId, String customerId);
 
     Result<PageVO<OrderVO>> page(PageForm form, String customerId);
+
+    @GetMapping("/")
+    Result<?> orderPaymentSuccess(String orderNo);
 }

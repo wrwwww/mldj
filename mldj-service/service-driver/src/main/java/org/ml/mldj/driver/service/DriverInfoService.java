@@ -21,6 +21,9 @@ import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.driver.entity.DriverSet;
 import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.ml.mldj.model.driver.vo.DriverVO;
+import org.ml.mldj.model.order.entity.OrderInfo;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -110,9 +113,7 @@ public class DriverInfoService {
 
     }
 
-    public Result<?> snatchingOrder(String driverId, String orderId) {
-        return null;
-    }
+
 
     @Transactional(rollbackFor = Exception.class)
     public Result<?> updateDriverLicense(DriverLicenseInfoDTO driverLicenseInfoDTO, String driverId) {

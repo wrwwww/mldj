@@ -40,7 +40,17 @@ public class OrderInfoController {
 
     @PostMapping("")
     @Operation(description = "创建新订单")
-    public Result<?> add(@RequestBody @Valid OrderForm form) {
+    public Result<OrderVO> createOrder(@RequestBody @Valid OrderForm form) {
         return Result.success(orderService.add(form));
+    }
+    @GetMapping("/")
+    @Operation(description ="订单支付完成")
+    Result<?> orderPaymentSuccess(String orderNo){
+       return Result.success(orderService.paymentSuccess(orderNo));
+    }
+    @GetMapping("/snatching/order")
+    @Operation(description = "司机抢单")
+    Result<?> snatchingOrder(String driverId, String orderId) {
+        return orderService.snatchingOrder(driverId, orderId);
     }
 }

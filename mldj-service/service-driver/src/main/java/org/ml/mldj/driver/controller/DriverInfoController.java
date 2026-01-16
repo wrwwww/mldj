@@ -75,11 +75,7 @@ public class DriverInfoController {
     }
 
 
-    @GetMapping("/snatching/order")
-    @Operation(description = "司机抢单")
-    Result<?> snatchingOrder(String driverId, String orderId) {
-        return driverService.snatchingOrder(driverId, orderId);
-    }
+
 
     @PostMapping("/driverLicenseInfo")
     @Operation(description = "更新司机的驾驶证信息")

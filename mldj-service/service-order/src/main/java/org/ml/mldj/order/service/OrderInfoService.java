@@ -1,5 +1,6 @@
 package org.ml.mldj.order.service;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.ml.mldj.common.constant.RedisConst;
@@ -8,17 +9,21 @@ import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.common.utils.ResultCode;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.customer.dto.OrderForm;
+import org.ml.mldj.model.order.OrderStatusEnum;
 import org.ml.mldj.model.order.dto.OrderPageForm;
 import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.order.vo.OrderVO;
+import org.ml.mldj.order.config.SnowflakeOrderIdGenerator;
 import org.ml.mldj.order.mapper.OrderInfoMapper;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -36,6 +41,8 @@ public class OrderInfoService {
     RedisTemplate<String, String> redisTemplate;
     @Autowired
     OrderInfoMapper orderInfoMapper;
+    @Autowired
+    RedissonClient redissonClient;
 
     @Transactional
     public Result<?> snatchingOrder(String driverId, String orderId) {
@@ -44,24 +51,36 @@ public class OrderInfoService {
         if (!redisTemplate.hasKey(key)) {
             throw new BizException(ResultCode.ORDER_EXIST);
         }
-        String s = redisTemplate.opsForValue().get(key);
-        // 获取锁
-        this.redisTemplate.execute(new SessionCallback<>() {
+        RLock lock = redissonClient.getLock(RedisConst.ORDER_KEY_LOCK + orderId);
+        try {
+            boolean flag = lock.tryLock(1, 1, TimeUnit.DAYS);
+            if (flag) {
 
-            @Override
-            public Object execute(RedisOperations operations) throws DataAccessException {
-                operations.watch(key);
-                operations.multi();
-                operations.opsForValue().set(key, driverId);
-                return operations.exec();
+                if (!redisTemplate.hasKey(key)) {
+                    throw new BizException(ResultCode.ORDER_EXIST);
+                }
+                // 订单入库
+                LambdaUpdateWrapper<OrderInfo> updateWrapper = new LambdaUpdateWrapper<>();
+                updateWrapper.eq(OrderInfo::getOrderNo, orderId).isNull(OrderInfo::getDriverId).eq(OrderInfo::getStatus, OrderStatusEnum.WAITING_DRIVER);
+                updateWrapper.set(OrderInfo::getDriverId, driverId)
+                        .set(OrderInfo::getStatus, OrderStatusEnum.ACCEPTED)
+                        .set(OrderInfo::getStartServiceTime, System.currentTimeMillis())
+                ;
+                int rows = orderInfoMapper.update(updateWrapper);
+                if (rows != 1) {
+                    log.error("订单:{},司机:{}入库失败", orderId, driverId);
+                    throw new BizException(ResultCode.ORDER_EXIST);
+                }
+
             }
-        });
-        redisTemplate.delete(key);
-        // 订单入库
-        int rows = orderInfoMapper.updateOrderDriver(orderId, driverId);
-        if (rows != 1) {
-            log.error("订单:{},司机:{}入库失败", orderId, driverId);
-            throw new BizException(ResultCode.ORDER_EXIST);
+
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (lock.isLocked()) {
+                lock.unlock();
+            }
         }
         return Result.success(null, "抢单成功");
     }
@@ -80,8 +99,37 @@ public class OrderInfoService {
         return PageVO.buildPageVO(page);
     }
 
-    public Object add(OrderForm form) {
+    @Autowired
+    SnowflakeOrderIdGenerator snowflakeOrderIdGenerator;
 
-        return  null;
+    public OrderVO add(OrderForm form) {
+
+        OrderInfo orderInfo = new OrderInfo();
+        BeanUtils.copyProperties(form, orderInfo);
+        orderInfo.setStatus(OrderStatusEnum.WAITING_DRIVER.getCode());
+        orderInfo.setOrderNo(snowflakeOrderIdGenerator.generate("", form.getCustomerId()));
+        int rows = orderInfoMapper.insert(orderInfo);
+        if (rows != 1) {
+            log.error("订单创建失败");
+            throw new BizException(ResultCode.ORDER_CREATE_ERROR);
+        }
+        log.info("订单：{}，创建成功", orderInfo.getOrderNo());
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(orderInfo, orderVO);
+
+        return orderVO;
+    }
+
+    public Object paymentSuccess(String orderNo) {
+        LambdaUpdateWrapper<OrderInfo> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(OrderInfo::getOrderNo, orderNo).eq(OrderInfo::getStatus, 1);
+        int update = orderInfoMapper.update(updateWrapper);
+        if (update < 1) {
+            log.error("订单:{},状态更新失败", orderNo);
+            throw new BizException("");
+        }
+
+
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package org.ml.mldj.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.ml.mldj.model.payments.entity.PaymentInfo;
 import org.ml.mldj.mapper.PaymentInfoMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-12-26
  */
 @Service
-public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMapper, PaymentInfo> implements IPaymentInfoService {
+public class PaymentInfoService extends ServiceImpl<PaymentInfoMapper, PaymentInfo> implements IService<PaymentInfo> {
 
 }

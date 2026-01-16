@@ -30,4 +30,8 @@ public interface OrderFeignClient {
     @GetMapping("/hasCustomerCurrentOrder")
     @Operation(summary = "查询乘客是否存在当前的订单")
     Result<?> hasCustomerCurrentOrder();
+
+    @GetMapping("/snatching/order")
+    @Operation(description = "司机抢单")
+    Result<?> snatchingOrder(String driverId, String orderId);
 }

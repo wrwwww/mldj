@@ -33,9 +33,7 @@ public interface DriverFeignClient {
     @PutMapping("/offline/{driverId}")
     Result<?> Offline(@PathVariable("driverId") String driverId);
 
-    @GetMapping("/snatching/order")
-    @Operation(description = "司机抢单")
-    Result<?> snatchingOrder(String driverId, String orderId);
+
 
     @PostMapping("/driverLicenseInfo")
     @Operation(description = "更新司机的驾驶证信息")

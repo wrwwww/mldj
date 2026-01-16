@@ -6,9 +6,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.payments.dto.WechatPayOrder;
+import org.ml.mldj.model.payments.vo.WxPrepayVo;
 import org.ml.mldj.service.WechatPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
@@ -34,7 +37,12 @@ public class PaymentInfoController {
     }
 
     @PostMapping("/create")
-    public Result<PrepayWithRequestPaymentResponse> createPayment(WechatPayOrder orderInfo) {
+    public Result<WxPrepayVo> createPayment(WechatPayOrder orderInfo) {
         return Result.success(wechatPayService.createPrepayOrder(orderInfo));
+    }
+    @Operation(summary = "支付状态查询")
+    @GetMapping("/queryPayStatus/{orderNo}")
+    public Result<?> queryPayStatus(@PathVariable String orderNo) {
+        return Result.success(wechatPayService.queryPayStatus(orderNo));
     }
 }
