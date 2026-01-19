@@ -1,23 +1,35 @@
 package org.ml.mldj.driver.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.customer.client.OrderFeignClient;
 import org.ml.mldj.driver.client.DriverFeignClient;
+import org.ml.mldj.map.client.MapFeignClient;
+import org.ml.mldj.model.map.dto.EstimateRouteForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("")
 public class OrderController {
-
     @Autowired
-    OrderFeignClient orderFeignClient ;
+    DriverFeignClient driverFeignClient ;
+    @Autowired
+    MapFeignClient mapFeignClient ;
     @GetMapping("")
     public Result<?> snatchingOrder(){
         String driverId="";
         String orderId="";
-        return orderFeignClient.snatchingOrder(driverId,orderId);
+        return driverFeignClient.snatchingOrder(driverId,orderId);
     }
+
+    @GetMapping("/estimateRoute")
+    @Operation(description = "规划路线")
+    public Result<?> estimateRoute(EstimateRouteForm form){
+        return mapFeignClient.estimateRoute(form);
+    }
+
 }
