@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.customer.service.OrderService;
-import org.ml.mldj.model.common.PageForm;
+import org.ml.mldj.model.common.PageRequest;
 import org.ml.mldj.model.customer.dto.CreateNewOrderForm;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.order.vo.OrderVO;
@@ -102,7 +102,7 @@ public class OrderController {
 
     @GetMapping("/page")
     @Operation(summary = "查询订单分页记录")
-    public Result<?> page(@RequestParam @Valid PageForm form) {
+    public Result<?> page(@RequestParam @Valid PageRequest form) {
         String customerId = "";
         PageVO<OrderVO> page = orderService.page(form, customerId);
         return Result.success(page);

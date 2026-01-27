@@ -2,7 +2,7 @@ package org.ml.mldj.order.client;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.ml.mldj.common.utils.Result;
-import org.ml.mldj.model.common.PageForm;
+import org.ml.mldj.model.common.PageRequest;
 import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.order.vo.OrderVO;
@@ -21,7 +21,7 @@ public interface OrderFeignClient {
 
     Result<Integer> del(String orderId, String customerId);
 
-    Result<PageVO<OrderVO>> page(PageForm form, String customerId);
+    Result<PageVO<OrderVO>> page(PageRequest form, String customerId);
 
     @GetMapping("/")
     Result<?> orderPaymentSuccess(String orderNo);

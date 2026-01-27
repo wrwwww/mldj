@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.common.utils.UserContext;
 import org.ml.mldj.driver.service.DriverInfoService;
+import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.driver.dto.DriverLicenseInfoDTO;
 import org.ml.mldj.model.driver.dto.DriverPageForm;
@@ -55,7 +56,7 @@ public class DriverInfoController {
 
     @GetMapping("/page")
     @Operation(description = "分页查询司机信息")
-    Result<PageVO<DriverVO>> queryDriverPage(@RequestParam DriverPageForm form) {
+    Result<PageVO<DriverVO>> queryDriverPage(@RequestParam PageQuery<DriverPageForm> form) {
         PageVO<DriverVO> page = driverService.queryDriverPage(form);
         return Result.success(page);
     }

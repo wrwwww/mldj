@@ -3,6 +3,7 @@ package org.ml.mldj.driver.client;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.driver.dto.*;
 import org.ml.mldj.model.driver.entity.DriverInfo;
@@ -28,7 +29,7 @@ public interface DriverFeignClient {
 
     @GetMapping("/page")
     @Operation(description = "分页查询司机信息")
-    Result<PageVO<DriverVO>> queryDriverPage(@RequestParam DriverPageForm form);
+    Result<PageVO<DriverVO>> queryDriverPage(@RequestParam PageQuery<DriverPageForm> form);
 
     @PutMapping("/offline/{driverId}")
     Result<?> Offline(@PathVariable("driverId") String driverId);
@@ -52,4 +53,12 @@ public interface DriverFeignClient {
     Result<?> Online(@PathVariable("driverId") String driverId);
 
 
+
+
+    @GetMapping("/searchDriverComprehensiveData")
+    Result<?> searchDriverComprehensiveData();
+
+
+    @PostMapping("/updateDriverRealAuth")
+    Result<?> updateDriverRealAuth();
 }

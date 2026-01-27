@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.customer.dto.CreateNewOrderForm;
+import org.ml.mldj.model.order.entity.OrderInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,4 +36,7 @@ public interface OrderFeignClient {
     @GetMapping("/snatching/order")
     @Operation(description = "司机抢单")
     Result<?> snatchingOrder(String driverId, String orderId);
+
+    @GetMapping("/page")
+    Result<?> searchOrderByPage(PageQuery<OrderInfo> query);
 }

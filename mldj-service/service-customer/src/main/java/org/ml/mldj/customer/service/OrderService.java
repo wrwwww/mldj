@@ -7,7 +7,7 @@ import org.ml.mldj.map.client.MapFeignClient;
 import org.ml.mldj.model.customer.dto.BefittingDriversForm;
 import org.ml.mldj.model.customer.dto.CalOrderFeeForm;
 import org.ml.mldj.model.order.dto.OrderMileageAndMinuteForm;
-import org.ml.mldj.model.common.PageForm;
+import org.ml.mldj.model.common.PageRequest;
 import org.ml.mldj.model.customer.dto.CreateNewOrderForm;
 import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.customer.dto.SendNewOrderMessageForm;
@@ -124,7 +124,7 @@ public class OrderService {
         return null;
     }
 
-    public PageVO<OrderVO> page(PageForm form, String customerId) {
+    public PageVO<OrderVO> page(PageRequest form, String customerId) {
         PageVO<OrderVO> vo = orderFeignClient.page(form, customerId).unwrap();
         return vo;
     }

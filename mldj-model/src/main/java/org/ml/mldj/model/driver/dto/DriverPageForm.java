@@ -10,15 +10,7 @@ import org.hibernate.validator.constraints.Range;
 @Data
 @Schema(description = "分页查询司机")
 public class DriverPageForm {
-    @NotNull(message = "page不能为空")
-    @Min(value = 1, message = "page不能小于1")
-    @Schema(description = "页数")
-    private Integer pageNum;
 
-    @NotNull(message = "length不能为空")
-    @Range(min = 10, max = 50, message = "length必须在10~50之间")
-    @Schema(description = "每页记录数")
-    private Integer pageSize;
 
     @Pattern(regexp = "^[\\u4e00-\\u9fa5]{2,10}$", message = "name内容不正确")
     @Schema(description = "姓名")

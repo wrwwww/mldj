@@ -10,15 +10,6 @@ import org.hibernate.validator.constraints.Range;
 @Data
 @Schema(description = "订单分页查询表单")
 public class OrderPageForm {
-    @NotNull(message = "length不能为空")
-    @Range(min = 10, max = 50, message = "length必须在10~50之间")
-    @Schema(description = "每页记录数")
-    private long pageSize;
-    @NotNull(message = "page不能为空")
-    @Min(value = 1, message = "page不能小于1")
-    @Schema(description = "页数")
-    private long pageNum;
-
     @Min(value = 1, message = "orderId不能小于1")
     @Schema(description = "订单ID")
     private Long orderId;

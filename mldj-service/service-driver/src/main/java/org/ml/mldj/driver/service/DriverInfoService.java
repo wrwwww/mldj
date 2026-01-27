@@ -10,6 +10,7 @@ import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.driver.mapper.DriverAccountMapper;
 import org.ml.mldj.driver.mapper.DriverInfoMapper;
 import org.ml.mldj.driver.mapper.DriverSetMapper;
+import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.driver.DriverWorkStatus;
 import org.ml.mldj.model.driver.dto.DriverLicenseInfoDTO;
@@ -19,11 +20,7 @@ import org.ml.mldj.model.driver.dto.WxLoginDTO;
 import org.ml.mldj.model.driver.entity.DriverAccount;
 import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.driver.entity.DriverSet;
-import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.ml.mldj.model.driver.vo.DriverVO;
-import org.ml.mldj.model.order.entity.OrderInfo;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -95,10 +92,10 @@ public class DriverInfoService {
         return driverSettingsMapper.selectById(driverId);
     }
 
-    public PageVO<DriverVO> queryDriverPage(DriverPageForm form) {
+    public PageVO<DriverVO> queryDriverPage(PageQuery<DriverPageForm> form) {
         // 创建分页对象，指定当前页和每页大小
         Page<DriverVO> page = new Page<>(form.getPageNum(), form.getPageSize());
-        Page<DriverVO> res = driverInfoMapper.queryDriverPage(page, form);
+        Page<DriverVO> res = driverInfoMapper.queryDriverPage(page, form.getFilters());
         return PageVO.buildPageVO(res);
     }
 
@@ -112,7 +109,6 @@ public class DriverInfoService {
         updateWrapper.set(DriverInfo::getStatus, DriverWorkStatus.OFFLINE.getCode());
 
     }
-
 
 
     @Transactional(rollbackFor = Exception.class)

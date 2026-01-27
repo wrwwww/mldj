@@ -3,9 +3,11 @@ package org.ml.mldj.order.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.order.dto.OrderPageForm;
+import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.order.vo.OrderVO;
 import org.ml.mldj.order.service.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +54,9 @@ public class OrderInfoController {
     @Operation(description = "司机抢单")
     Result<?> snatchingOrder(String driverId, String orderId) {
         return orderService.snatchingOrder(driverId, orderId);
+    }
+    @GetMapping("/admin/page")
+    Result<?> searchOrderByPage(PageQuery<OrderInfo> query){
+        return Result.success(orderService.page(query));
     }
 }

@@ -1,5 +1,6 @@
 package org.ml.mldj.order.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.ml.mldj.common.constant.RedisConst;
 import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.common.utils.ResultCode;
+import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.customer.dto.OrderForm;
 import org.ml.mldj.model.order.OrderStatusEnum;
@@ -23,6 +25,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -131,5 +134,31 @@ public class OrderInfoService {
 
 
         return true;
+    }
+
+    public PageVO<OrderVO> page(PageQuery<OrderInfo> query) {
+        Page<OrderInfo> page = new Page<>(
+                query.getPageSize(),
+                query.getPageSize()
+        );
+        LambdaQueryWrapper<OrderInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(OrderInfo::getOrderNo, query.getFilters().getOrderNo())
+                .eq(OrderInfo::getStatus, query.getFilters().getStatus())
+                .eq(OrderInfo::getDriverId, query.getFilters().getDriverId())
+                .eq(OrderInfo::getCustomerId, query.getFilters().getCustomerId())
+
+        ;
+
+        Page<OrderInfo> orderInfoPage = orderInfoMapper.selectPage(page, queryWrapper);
+        PageVO<OrderInfo> orderList = PageVO.buildPageVO(orderInfoPage);
+        List<OrderVO> result = orderList.getList().stream().map(orderInfo -> {
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(orderInfo, orderVO);
+            return orderVO;
+        }).toList();
+        PageVO<OrderVO> orderVOPageVO = new PageVO<>();
+        BeanUtils.copyProperties(orderList, orderVOPageVO);
+        orderVOPageVO.setList(result);
+        return orderVOPageVO;
     }
 }
