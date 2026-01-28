@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient("service-customer")
 public interface CustomerFeignClient {
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/customerInfo/{customerId}")
     @Operation(description = "获取用户信息")
     Result<CustomerVO> queryCustomer(@PathVariable("customerId") String customerId);
 
-    @PostMapping("/{customerId}")
-    Result<Boolean> updateCustomer(@RequestBody UpdateCustomerForm form, @PathVariable("customerId") String customerId);
+    @PostMapping("/customerInfo/")
+    @Operation(summary = "更新用户信息")
+    Result<Boolean> updateCustomer(@RequestBody UpdateCustomerForm form);
 }

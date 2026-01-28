@@ -1,7 +1,7 @@
 package org.ml.mldj.driver.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ml.mldj.common.utils.JwtUtil;
+import org.ml.mldj.common.utils.JwtTokenUtil;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.config.WxConfig;
@@ -32,7 +32,7 @@ public class DriverService {
     @Autowired
     DriverFeignClient driverFeignClient;
     @Autowired
-    JwtUtil jwtUtil;
+    JwtTokenUtil jwtTokenUtil;
 
     public LoginVO login(WxLoginDTO form) {
         // 获取openid
@@ -48,8 +48,8 @@ public class DriverService {
             }
             userId = driver.getId();
             // 根据用户id生成token
-            String token = jwtUtil.generateAccessToken(userId);
-            String refreshToken = jwtUtil.generateRefreshToken(userId);
+            String token = jwtTokenUtil.generateAccessToken(userId,"x");
+            String refreshToken = jwtTokenUtil.generateRefreshToken(userId);
             LoginVO loginVO = new LoginVO();
             BeanUtils.copyProperties(driver, loginVO);
             loginVO.setToken(token);

@@ -1,5 +1,6 @@
 package org.ml.mldj.mgr.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.customer.client.OrderFeignClient;
 import org.ml.mldj.model.common.PageQuery;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/order")
-public class orderController {
+public class OrderController {
 
     @Autowired
     OrderFeignClient orderFeignClient;
@@ -26,7 +27,6 @@ public class orderController {
     public Result<?> searchOrderByPage(PageQuery<OrderInfo> query) {
         return orderFeignClient.searchOrderByPage(query);
     }
-
     @GetMapping("/searchOrderLastGps")
     public Result<?> searchOrderLastGps(String orderId) {
         return orderFeignClient.searchOrderLastGps(orderId);

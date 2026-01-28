@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.customer.dto.AddCustomerCarForm;
-import org.ml.mldj.model.entity.CustomerCar;
+import org.ml.mldj.model.customer.entity.CustomerCar;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

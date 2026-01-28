@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "org.ml.mldj.*")
 @SpringBootApplication
 @EnableRabbit
 public class WebDriverApplication {

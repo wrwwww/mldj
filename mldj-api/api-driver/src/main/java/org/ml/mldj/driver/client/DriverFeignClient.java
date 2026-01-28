@@ -15,40 +15,49 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient("service-driver")
 public interface DriverFeignClient {
-    @GetMapping("/driver/{openid}")
+    @GetMapping("/driverInfo/driver/{openid}")
+    @Operation(description = "根据 openid 获取司机信息")
     Result<DriverInfo> getDriverByOpenId(@PathVariable("openid") String openid);
 
-    @PostMapping("/driver")
-    Result<DriverInfo> registerNewDriver(WxLoginDTO form);
+    @PostMapping("/driverInfo/driver")
+    @Operation(description = "注册新司机")
+    Result<DriverInfo> registerNewDriver(@RequestBody WxLoginDTO form);
 
-    @GetMapping("/driver/info/{driverId}")
+    @GetMapping("/driverInfo/driver/info/{driverId}")
+    @Operation(description = "根据司机ID查询司机信息")
     Result<DriverInfo> queryDriverByDriverId(@PathVariable String driverId);
 
-    @GetMapping("/settings/{driverId}")
+    @GetMapping("/driverInfo/settings/{driverId}")
+    @Operation(description = "查询司机设置")
     Result<DriverSet> queryDriverSettings(@PathVariable String driverId);
 
-    @GetMapping("/page")
+    @GetMapping("/driverInfo/page")
     @Operation(description = "分页查询司机信息")
     Result<PageVO<DriverVO>> queryDriverPage(@RequestParam PageQuery<DriverPageForm> form);
 
-    @PutMapping("/offline/{driverId}")
+    @PutMapping("/driverInfo/offline/{driverId}")
+    @Operation(description = "司机离线")
     Result<?> Offline(@PathVariable("driverId") String driverId);
 
 
 
-    @PostMapping("/driverLicenseInfo")
+    @PostMapping("/driverInfo/driverLicenseInfo")
     @Operation(description = "更新司机的驾驶证信息")
-    Result<?> updateDriverLicense(DriverLicenseInfoDTO driverLicenseInfoDTO, String driverId);
+    Result<?> updateDriverLicense(@RequestBody DriverLicenseInfoDTO driverLicenseInfoDTO, @RequestParam("driverId") String driverId);
 
-    @PutMapping("/realName")
+    @PutMapping("/driverInfo/realName")
     @Operation(description = "更新用户的实名信息")
     Result<?> updateDriverRealName(@Valid RealnameSubmitDTO submitDTO);
 
-    Result<DriverInfo> getDriverById(Long driverId);
+    @GetMapping("/driverInfo/getById/{driverId}")
+    @Operation(description = "根据ID获取司机信息")
+    Result<DriverInfo> getDriverById(@PathVariable("driverId") Long driverId);
 
-    Result<Void> updateDriverBasicInfo(Long driverId, DriverBasicInfoUpdateForm form);
+    @PutMapping("/driverInfo/basic/{driverId}")
+    @Operation(description = "更新司机基础信息")
+    Result<Void> updateDriverBasicInfo(@PathVariable("driverId") Long driverId, @RequestBody DriverBasicInfoUpdateForm form);
 
-    @PutMapping("/online/{driverId}")
+    @PutMapping("/driverInfo/online/{driverId}")
     @Operation(description = "司机离线")
     Result<?> Online(@PathVariable("driverId") String driverId);
 
@@ -56,9 +65,11 @@ public interface DriverFeignClient {
 
 
     @GetMapping("/searchDriverComprehensiveData")
+    @Operation(description = "查询司机综合数据")
     Result<?> searchDriverComprehensiveData();
 
 
     @PostMapping("/updateDriverRealAuth")
+    @Operation(description = "更新司机实名认证状态")
     Result<?> updateDriverRealAuth();
 }

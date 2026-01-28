@@ -48,6 +48,11 @@
         </dependency>
         <dependency>
             <groupId>org.ml</groupId>
+            <artifactId>api-system</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ml</groupId>
             <artifactId>api-customer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

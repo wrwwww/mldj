@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: "service-rules"
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        server-addr: 192.168.117.129:8848
+        namespace: public
+
+      discovery:
+        enabled: true
+        namespace: public
+        username: nacos
+        password: VrYNf4sne0
+        server-addr: 192.168.117.129:8848
+        heart-beat-interval: 1000
+        heart-beat-timeout: 1000
+        group: DEFAULT_GROUP
+  config:
+    import:
+      - nacos:${spring.application.name}-dev?group=DEFAULT_GROUP&refresh=true
+
+#    sentinel:
+#      transport:
+#        dashboard:
+#        port: 8719
+#        clientIp:
+#      enabled: true
+logging:
+  level:
+#    com.alibaba.nacos: DEBUG
+    org.springframework.cloud: DEBUG
+drools:
+  # 规则文件监听配置
+  file-watch:
+    enabled: true
+    interval: 10  # 监听间隔（秒）
+
+  # 规则配置
+  rules:
+    path: classpath:rules/
+    reload: true  # 是否支持热加载
+
+  # 会话配置
+  session:
+    pool:
+      min: 5
+      max: 20
+    max-alive-time: 300000  # 会话最大存活时间（毫秒）

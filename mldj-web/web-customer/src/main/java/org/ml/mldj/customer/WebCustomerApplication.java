@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "org.ml.mldj.*")
 @SpringBootApplication
 public class WebCustomerApplication {
     public static void main(String[] args) {

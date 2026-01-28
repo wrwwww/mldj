@@ -49,6 +49,7 @@
         <seata.version>1.7.1</seata.version>
         <drools.version>7.74.1.Final</drools.version>
         <amqp.version>5.18.0</amqp.version>
+        <security.vsersion>3.5.8</security.vsersion>
     </properties>
     <dependencies>
         <dependency>
@@ -86,7 +87,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${security.vsersion}</version>
+            </dependency>
             <!--mybatis-plus 持久层-->
             <dependency>
                 <groupId>com.baomidou</groupId>

@@ -7,6 +7,7 @@ import org.ml.mldj.model.map.dto.NearbyDriver;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -14,9 +15,10 @@ import java.util.List;
 @FeignClient("service-driver")
 public interface DriverLocationFeignClient {
     @PutMapping("")
+    @Operation(description = "更新司机位置")
     Result<?> update(@RequestParam String driverId, @RequestParam double longitude, @RequestParam double latitude);
     @GetMapping("")
     @Operation(description = "查找附近的司机")
-    Result<List<NearbyDriver>> findNearbyDriversWithFilter(BefittingDriversForm befittingDriversForm);
+    Result<List<NearbyDriver>> findNearbyDriversWithFilter(@RequestBody BefittingDriversForm befittingDriversForm);
 
 }

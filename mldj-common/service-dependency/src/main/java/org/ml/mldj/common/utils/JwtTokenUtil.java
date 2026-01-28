@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.ml.mldj.common.exception.TokenException;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +15,8 @@ import java.util.*;
 
 @Component
 @Slf4j
-public class JwtUtil {
+@Getter
+public class JwtTokenUtil {
 
     private static final String ISSUER = "your-app";
     private static final String AUDIENCE = "web-client";
@@ -64,12 +66,12 @@ public class JwtUtil {
         return buildToken(claims, userDetails.getUsername(), expiration);
     }
 
-    public String generateAccessToken(String id) {
+    public String generateAccessToken(String id,String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERID, id);
         claims.put(CLAIM_KEY_TYPE, "access");
 
-        return buildToken(claims, id, expiration);
+        return buildToken(claims, username, expiration);
     }
 
     /**
@@ -166,7 +168,14 @@ public class JwtUtil {
             throw new TokenException(ResultCode.TOKEN_ILLEGALARGUMENT);
         }
     }
-
+    public boolean validateToken(String token) {
+        try {
+            getAllClaimsFromToken(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
     /**
      * 验证令牌是否有效
      */

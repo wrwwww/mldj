@@ -5,5 +5,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/voucher")
-public class voucherController {
+public class VoucherController {
 }

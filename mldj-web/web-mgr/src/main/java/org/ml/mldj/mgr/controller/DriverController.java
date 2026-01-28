@@ -1,6 +1,7 @@
 package org.ml.mldj.mgr.controller;
 
 import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.customer.client.CustomerCarFeignClient;
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.driver.dto.DriverPageForm;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/driver")
-public class driverController {
+public class DriverController {
     @Autowired
     DriverFeignClient driverFeignClient;
 
