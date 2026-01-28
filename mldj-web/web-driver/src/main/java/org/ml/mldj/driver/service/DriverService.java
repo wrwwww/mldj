@@ -1,7 +1,6 @@
 package org.ml.mldj.driver.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ml.mldj.common.utils.JwtTokenUtil;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.driver.client.DriverFeignClient;
 import org.ml.mldj.driver.config.WxConfig;
@@ -13,6 +12,7 @@ import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.driver.entity.DriverSet;
 import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.ml.mldj.model.driver.vo.DriverVO;
+import org.ml.mldj.security.JwtTokenUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class DriverService {
         if (openid != null) {
             // 查询数据库获取用户信息
             DriverInfo driver = driverFeignClient.getDriverByOpenId(openid.getOpenid()).unwrap();
-            String userId = null;
+            Long userId = null;
             // 用户存在就走登录
             if (driver == null) {
                 // 用户不存在就注册

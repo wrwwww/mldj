@@ -63,6 +63,11 @@
         </dependency>
         <dependency>
             <groupId>org.ml</groupId>
+            <artifactId>common-security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ml</groupId>
             <artifactId>service-dependency</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <exclusions>

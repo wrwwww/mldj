@@ -5,28 +5,38 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.ml</groupId>
-        <artifactId>mldj</artifactId>
+        <artifactId>mldj-service</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mldj-common</artifactId>
+    <artifactId>auth-service</artifactId>
 
-    <packaging>pom</packaging>
-    <modules>
-        <module>common-utils</module>
-        <module>service-dependency</module>
-        <module>common-security</module>
-    </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
+        <!-- Web -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- Security（只用于登录） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- common-security（JWT + LoginUser） -->
+        <dependency>
+            <groupId>org.ml</groupId>
+            <artifactId>common-security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 </project>
