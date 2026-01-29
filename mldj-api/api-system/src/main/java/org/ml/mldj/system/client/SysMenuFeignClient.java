@@ -34,4 +34,9 @@ public interface SysMenuFeignClient {
     @Operation(summary = "根据角色获取菜单")
     @GetMapping("/sysMenu/toAssign/{roleId}")
     Result<?> toAssign(@PathVariable("roleId") Long roleId);
+
+    @GetMapping("/sysMenu/roles")
+    Result<List<SysMenu>> queryMenuByRoles(List<Long> roleIds);
+
+
 }

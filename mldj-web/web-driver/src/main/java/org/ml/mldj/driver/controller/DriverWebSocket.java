@@ -39,7 +39,7 @@ public class DriverWebSocket {
     DriverFeignClient driverFeignClient;
 
     // 保存所有连接的司机
-    private static final ConcurrentHashMap<String, Session> driverSessions =
+    private static final ConcurrentHashMap<Long, Session> driverSessions =
             new ConcurrentHashMap<>();
 
     // Redis键前缀
@@ -52,7 +52,7 @@ public class DriverWebSocket {
      * 连接建立
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("driverId") String driverId) {
+    public void onOpen(Session session, @PathParam("driverId") Long driverId) {
         driverSessions.put(driverId, session);
 
         // 记录到Redis，支持分布式部署
@@ -74,7 +74,7 @@ public class DriverWebSocket {
      * 收到消息
      */
     @OnMessage
-    public void onMessage(String message, Session session, @PathParam("driverId") String driverId) {
+    public void onMessage(String message, Session session, @PathParam("driverId") Long driverId) {
         log.info("收到司机消息: driverId={}, message={}", driverId, message);
 
         try {
@@ -110,7 +110,7 @@ public class DriverWebSocket {
      * 连接关闭
      */
     @OnClose
-    public void onClose(Session session, @PathParam("driverId") String driverId) {
+    public void onClose(Session session, @PathParam("driverId") Long driverId) {
         driverSessions.remove(driverId);
 
         driverFeignClient.Offline(driverId);
@@ -128,7 +128,7 @@ public class DriverWebSocket {
         // 将消息发送给form中的司机
         form.getDriversContent().forEach(driver -> {
             String[] split = driver.split("#");
-            String driverId = split[0];
+            Long driverId = Long.valueOf(split[0]);
             String distinct = split[1];
             Session session = driverSessions.get(driverId);
             if (session != null && session.isOpen()) {
@@ -144,7 +144,7 @@ public class DriverWebSocket {
 
     }
 
-    private static HashMap<String, Object> getStringObjectHashMap(SendNewOrderMessageForm form, String driverId, String distinct) {
+    private static HashMap<String, Object> getStringObjectHashMap(SendNewOrderMessageForm form, Long driverId, String distinct) {
         HashMap<String, Object> objectObjectHashMap = new HashMap<>();
         objectObjectHashMap.put("driverId", driverId);
         objectObjectHashMap.put("distinct", distinct);
@@ -205,8 +205,8 @@ public class DriverWebSocket {
     /**
      * 广播消息给多个司机
      */
-    public void broadcastToDrivers(List<String> driverIds, WebSocketMessage message) {
-        for (String driverId : driverIds) {
+    public void broadcastToDrivers(List<Long> driverIds, WebSocketMessage message) {
+        for (Long driverId : driverIds) {
             sendMessage(driverId, message);
         }
     }
@@ -214,7 +214,7 @@ public class DriverWebSocket {
     /**
      * 发送消息
      */
-    private void sendMessage(String driverId, WebSocketMessage message) {
+    private void sendMessage(Long driverId, WebSocketMessage message) {
         try {
             Session session = driverSessions.get(driverId);
             if (session != null && session.isOpen()) {
@@ -228,7 +228,7 @@ public class DriverWebSocket {
     /**
      * 处理心跳
      */
-    private void handleHeartbeat(String driverId) {
+    private void handleHeartbeat(Long driverId) {
         // 更新心跳时间
         String key = "driver:heartbeat:" + driverId;
         redisTemplate.opsForValue().set(key, String.valueOf(System.currentTimeMillis()),
@@ -246,7 +246,7 @@ public class DriverWebSocket {
     /**
      * 处理位置更新
      */
-    private void handleLocationUpdate(String driverId, Object data) {
+    private void handleLocationUpdate(Long driverId, Object data) {
         try {
             Map<String, Double> locationData = (Map<String, Double>) data;
             Double longitude = locationData.get("longitude");

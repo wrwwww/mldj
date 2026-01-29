@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateCustomerForm {
-    String customerId;
+    Long customerId;
     /**
      * 昵称
      */

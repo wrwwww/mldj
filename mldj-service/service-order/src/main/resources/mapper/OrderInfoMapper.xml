@@ -12,7 +12,7 @@
     </select>
     <select id="page" resultType="org.ml.mldj.model.order.vo.OrderVO">
         select *
-        from order
+        from order_info
         where 1=1
         <if test="orderId!=null">
             and id=#{orderId}

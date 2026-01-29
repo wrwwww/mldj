@@ -74,6 +74,12 @@
             <artifactId>api-driver</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- common-security（JWT + LoginUser） -->
+        <dependency>
+            <groupId>org.ml</groupId>
+            <artifactId>common-security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

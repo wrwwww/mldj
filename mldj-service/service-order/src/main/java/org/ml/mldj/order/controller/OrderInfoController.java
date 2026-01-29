@@ -2,6 +2,7 @@ package org.ml.mldj.order.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.apache.catalina.security.SecurityUtil;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
@@ -10,6 +11,7 @@ import org.ml.mldj.model.order.dto.OrderPageForm;
 import org.ml.mldj.model.order.entity.OrderInfo;
 import org.ml.mldj.model.order.vo.OrderVO;
 import org.ml.mldj.order.service.OrderInfoService;
+import org.ml.mldj.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ public class OrderInfoController {
     @GetMapping("/{orderId}")
     @Operation(description = "查询订单详情")
     public Result<?> query(@PathVariable("orderId") String orderId) {
+        Long userId = SecurityUtils.getUserId();
         return Result.success(orderService.query(orderId));
     }
 

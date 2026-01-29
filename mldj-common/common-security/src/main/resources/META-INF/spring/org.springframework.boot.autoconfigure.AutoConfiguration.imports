@@ -1,2 +1,5 @@
 org.ml.mldj.security.SecurityAutoConfiguration
 org.ml.mldj.security.JwtTokenUtil
+org.ml.mldj.security.JsonAccessDeniedHandler
+org.ml.mldj.security.JsonAuthenticationEntryPoint
+org.ml.mldj.security.FeignJwtTokenInterceptor

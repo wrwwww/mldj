@@ -18,7 +18,7 @@ public interface OrderFeignClient {
 
     @GetMapping("/orderInfo/{orderId}")
     @Operation(description = "查询订单详情")
-    Result<OrderVO> query(@PathVariable("orderId") String orderId, @RequestParam(value = "customerId", required = false) String customerId);
+    Result<OrderVO> query(@PathVariable("orderId") String orderId);
 
     @DeleteMapping("/orderInfo/{orderId}")
     @Operation(description = "删除/取消订单")

@@ -16,7 +16,7 @@ public interface CustomerFeignClient {
 
     @GetMapping("/customerInfo/{customerId}")
     @Operation(description = "获取用户信息")
-    Result<CustomerVO> queryCustomer(@PathVariable("customerId") String customerId);
+    Result<CustomerVO> queryCustomer(@PathVariable("customerId") long customerId);
 
     @PostMapping("/customerInfo/")
     @Operation(summary = "更新用户信息")

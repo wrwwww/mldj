@@ -6,7 +6,7 @@ import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.driver.service.DriverService;
 import org.ml.mldj.model.common.LoginVO;
 import org.ml.mldj.model.driver.dto.DriverBasicInfoUpdateForm;
-import org.ml.mldj.model.driver.dto.WxLoginDTO;
+import org.ml.mldj.model.driver.dto.WeChatLoginRequest;
 import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +24,14 @@ public class DriverController {
     DriverService driverService;
 
     @PostMapping("")
-    public Result<LoginVO> login(@RequestBody @Valid WxLoginDTO form) {
+    public Result<LoginVO> login(@RequestBody @Valid WeChatLoginRequest form) {
         // 校验关键信息
         LoginVO login = driverService.login(form);
         return Result.success(login);
     }
 
     @GetMapping("/driver/{driverId}")
-    public Result<?> getDriver(@PathVariable @Valid String driverId) {
+    public Result<?> getDriver(@PathVariable @Valid Long driverId) {
         return driverService.getDriverById(driverId);
     }
 
@@ -44,18 +44,18 @@ public class DriverController {
 
     @PutMapping("/offline/{driverId}")
     @Operation(description = "司机离线")
-    Result<?> Offline(@PathVariable("driverId") String driverId) {
+    Result<?> Offline(@PathVariable("driverId") Long driverId) {
         return driverService.offline(driverId);
     }
 
     @PutMapping("/online/{driverId}")
     @Operation(description = "司机在线")
-    Result<?> Online(@PathVariable("driverId") String driverId) {
+    Result<?> Online(@PathVariable("driverId") Long driverId) {
         return driverService.online(driverId);
     }
 
     @GetMapping("/settings/{driverId}")
-    Result<DriverSettingVO> queryDriverSettings(@PathVariable String driverId) {
+    Result<DriverSettingVO> queryDriverSettings(@PathVariable Long driverId) {
         DriverSettingVO vo = driverService.queryDriverSetting(driverId);
         return Result.success(vo);
     }

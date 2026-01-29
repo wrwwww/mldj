@@ -7,6 +7,7 @@ import org.ml.mldj.common.utils.UserContext;
 import org.ml.mldj.customer.client.CustomerFeignClient;
 import org.ml.mldj.model.customer.dto.UpdateCustomerForm;
 import org.ml.mldj.model.customer.vo.CustomerVO;
+import org.ml.mldj.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,15 @@ public class CustomerController {
     @GetMapping
     @Operation(description = "获取用户信息")
     Result<CustomerVO> queryCustomer() {
-        String customerId = UserContext.getUserId();
-        return customerFeignClient.queryCustomer(customerId);
+        Long userId = SecurityUtils.getUserId();
+        return customerFeignClient.queryCustomer(userId);
     }
 
     @PostMapping
     Result<Boolean> updateCustomer(@RequestBody @Valid UpdateCustomerForm form) {
-        String customerId = UserContext.getUserId();
-        form.setCustomerId(customerId);
-        return customerFeignClient.updateCustomer(form, customerId);
+        Long userId = SecurityUtils.getUserId();
+        form.setCustomerId(userId);
+        return customerFeignClient.updateCustomer(form);
     }
 
 }

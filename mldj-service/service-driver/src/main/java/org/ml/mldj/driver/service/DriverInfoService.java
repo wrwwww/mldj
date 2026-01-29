@@ -16,7 +16,7 @@ import org.ml.mldj.model.driver.DriverWorkStatus;
 import org.ml.mldj.model.driver.dto.DriverLicenseInfoDTO;
 import org.ml.mldj.model.driver.dto.DriverPageForm;
 import org.ml.mldj.model.driver.dto.RealnameSubmitDTO;
-import org.ml.mldj.model.driver.dto.WxLoginDTO;
+import org.ml.mldj.model.driver.dto.WeChatLoginRequest;
 import org.ml.mldj.model.driver.entity.DriverAccount;
 import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.driver.entity.DriverSet;
@@ -54,7 +54,7 @@ public class DriverInfoService {
         return null;
     }
 
-    public String registerNewDriver(WxLoginDTO form) {
+    public String registerNewDriver(WeChatLoginRequest form) {
         DriverInfo driver = new DriverInfo();
         BeanUtils.copyProperties(form, driver);
         driverInfoMapper.insert(driver);

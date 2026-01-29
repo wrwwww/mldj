@@ -11,7 +11,11 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients
 @ComponentScan("org.ml.mldj.*")
 @MapperScan("org.ml.mldj.system.mapper")
-@SpringBootApplication
+@SpringBootApplication(
+        exclude = {
+                org.ml.mldj.common.config.RustfsS3AutoConfiguration.class,
+        }
+)
 public class ServiceSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceSystemApplication.class, args);

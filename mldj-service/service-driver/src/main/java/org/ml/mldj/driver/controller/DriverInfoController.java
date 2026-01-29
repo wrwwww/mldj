@@ -10,7 +10,7 @@ import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.driver.dto.DriverLicenseInfoDTO;
 import org.ml.mldj.model.driver.dto.DriverPageForm;
 import org.ml.mldj.model.driver.dto.RealnameSubmitDTO;
-import org.ml.mldj.model.driver.dto.WxLoginDTO;
+import org.ml.mldj.model.driver.dto.WeChatLoginRequest;
 import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.driver.entity.DriverSet;
 import org.ml.mldj.model.driver.vo.DriverVO;
@@ -38,7 +38,7 @@ public class DriverInfoController {
     }
 
     @PostMapping("/driver")
-    Result<String> registerNewDriver(WxLoginDTO form) {
+    Result<String> registerNewDriver(WeChatLoginRequest form) {
         String userId = driverService.registerNewDriver(form);
         return Result.success(userId);
     }

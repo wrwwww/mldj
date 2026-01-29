@@ -1,5 +1,6 @@
 package org.ml.mldj.system.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.ml.mldj.model.system.entity.XxlJobLog;
 import org.ml.mldj.system.mapper.XxlJobLogMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2025-12-26
  */
 @Service
-public class XxlJobLogServiceImpl extends ServiceImpl<XxlJobLogMapper, XxlJobLog> implements IXxlJobLogService {
+public class XxlJobLogService extends ServiceImpl<XxlJobLogMapper, XxlJobLog> implements IService<XxlJobLog> {
 
 }

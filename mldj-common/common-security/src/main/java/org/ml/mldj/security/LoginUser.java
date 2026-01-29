@@ -18,14 +18,16 @@ public class LoginUser implements UserDetails {
 
     private Long userId;
     private String username;
-    private List<String> roles;
+    private Collection<String> roles;
     private String password;
+
     public LoginUser(Long userId, String username, List<String> roles) {
         this.userId = userId;
         this.username = username;
         this.roles = roles;
     }
-    public LoginUser(Long userId, String username, List<String> roles,String password) {
+
+    public LoginUser(Long userId, String username, Collection<String> roles, String password) {
         this.userId = userId;
         this.username = username;
         this.roles = roles;
@@ -39,12 +41,35 @@ public class LoginUser implements UserDetails {
                 .toList();
     }
 
-    @Override public String getPassword() { return password; }
-    @Override public String getUsername() { return username; }
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return true; }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 
 }

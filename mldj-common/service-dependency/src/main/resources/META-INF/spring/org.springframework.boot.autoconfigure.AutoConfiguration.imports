@@ -2,5 +2,4 @@ org.ml.mldj.common.config.RustfsS3AutoConfiguration
 org.ml.mldj.common.config.MybatisPlusConfig
 org.ml.mldj.common.filter.FeignUserInterceptor
 org.ml.mldj.common.filter.PerRequestFilter
-org.ml.mldj.common.utils.JwtTokenUtil
 org.ml.mldj.common.config.RedissonConfig

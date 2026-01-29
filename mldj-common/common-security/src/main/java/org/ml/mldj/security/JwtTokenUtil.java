@@ -61,6 +61,7 @@ public class JwtTokenUtil {
     public String generateAccessToken(LoginUser userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERID, userDetails.getUserId());
+        claims.put(CLAIM_KEY_ROLES, userDetails.getRoles());
 //        claims.put(CLAIM_KEY_ROLES, userDetails.getAuthorities().stream()
 //                .map(GrantedAuthority::getAuthority)
 //                .collect(Collectors.toList()));

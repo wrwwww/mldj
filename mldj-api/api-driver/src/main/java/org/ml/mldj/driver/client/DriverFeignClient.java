@@ -21,15 +21,15 @@ public interface DriverFeignClient {
 
     @PostMapping("/driverInfo/driver")
     @Operation(description = "注册新司机")
-    Result<DriverInfo> registerNewDriver(@RequestBody WxLoginDTO form);
+    Result<DriverInfo> registerNewDriver(@RequestBody WeChatLoginRequest form);
 
     @GetMapping("/driverInfo/driver/info/{driverId}")
     @Operation(description = "根据司机ID查询司机信息")
-    Result<DriverInfo> queryDriverByDriverId(@PathVariable String driverId);
+    Result<DriverInfo> queryDriverByDriverId(@PathVariable Long driverId);
 
     @GetMapping("/driverInfo/settings/{driverId}")
     @Operation(description = "查询司机设置")
-    Result<DriverSet> queryDriverSettings(@PathVariable String driverId);
+    Result<DriverSet> queryDriverSettings(@PathVariable Long driverId);
 
     @GetMapping("/driverInfo/page")
     @Operation(description = "分页查询司机信息")
@@ -37,13 +37,13 @@ public interface DriverFeignClient {
 
     @PutMapping("/driverInfo/offline/{driverId}")
     @Operation(description = "司机离线")
-    Result<?> Offline(@PathVariable("driverId") String driverId);
+    Result<?> Offline(@PathVariable("driverId") Long driverId);
 
 
 
     @PostMapping("/driverInfo/driverLicenseInfo")
     @Operation(description = "更新司机的驾驶证信息")
-    Result<?> updateDriverLicense(@RequestBody DriverLicenseInfoDTO driverLicenseInfoDTO, @RequestParam("driverId") String driverId);
+    Result<?> updateDriverLicense(@RequestBody DriverLicenseInfoDTO driverLicenseInfoDTO, @RequestParam("driverId") Long driverId);
 
     @PutMapping("/driverInfo/realName")
     @Operation(description = "更新用户的实名信息")
@@ -59,7 +59,7 @@ public interface DriverFeignClient {
 
     @PutMapping("/driverInfo/online/{driverId}")
     @Operation(description = "司机离线")
-    Result<?> Online(@PathVariable("driverId") String driverId);
+    Result<?> Online(@PathVariable("driverId") Long driverId);
 
 
 

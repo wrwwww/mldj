@@ -7,6 +7,8 @@ import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.mgr.service.SysMenuService;
 import org.ml.mldj.model.system.entity.SysMenu;
 import org.ml.mldj.model.system.vo.AssginMenuVo;
+import org.ml.mldj.model.system.vo.MenuTreeVO;
+import org.ml.mldj.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +65,12 @@ public class SysMenuController {
     public Result<?> doAssign(@RequestBody AssginMenuVo assginMenuVo) {
         return sysMenuService.doAssign(assginMenuVo);
     }
+
+    @GetMapping("/tree")
+    public Result<List<MenuTreeVO>> menuTree(){
+        Long userId = SecurityUtils.getUserId();
+        return Result.success(sysMenuService.getMenuTreeByUserId(userId));
+    }
+
 }
 

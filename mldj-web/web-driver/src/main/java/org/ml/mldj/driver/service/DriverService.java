@@ -7,18 +7,20 @@ import org.ml.mldj.driver.config.WxConfig;
 import org.ml.mldj.model.common.LoginVO;
 import org.ml.mldj.model.common.WxLoginInfoVO;
 import org.ml.mldj.model.driver.dto.DriverBasicInfoUpdateForm;
-import org.ml.mldj.model.driver.dto.WxLoginDTO;
+import org.ml.mldj.model.driver.dto.WeChatLoginRequest;
 import org.ml.mldj.model.driver.entity.DriverInfo;
 import org.ml.mldj.model.driver.entity.DriverSet;
 import org.ml.mldj.model.driver.vo.DriverSettingVO;
 import org.ml.mldj.model.driver.vo.DriverVO;
 import org.ml.mldj.security.JwtTokenUtil;
+import org.ml.mldj.security.LoginUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -34,7 +36,7 @@ public class DriverService {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    public LoginVO login(WxLoginDTO form) {
+    public LoginVO login(WeChatLoginRequest form) {
         // 获取openid
         WxLoginInfoVO openid = getOpenid(form.getCode());
         if (openid != null) {
@@ -48,12 +50,13 @@ public class DriverService {
             }
             userId = driver.getId();
             // 根据用户id生成token
+            new LoginUser(driver.getId(),driver.getName(), List.of("ROLE_DRIVER"));
             String token = jwtTokenUtil.generateAccessToken(userId,"x");
-            String refreshToken = jwtTokenUtil.generateRefreshToken(userId);
+//            String refreshToken = jwtTokenUtil.generateRefreshToken(userId);
             LoginVO loginVO = new LoginVO();
             BeanUtils.copyProperties(driver, loginVO);
             loginVO.setToken(token);
-            loginVO.setRefreshToken(refreshToken);
+//            loginVO.setRefreshToken(refreshToken);
             return loginVO;
         }
         throw new RuntimeException();
@@ -85,7 +88,7 @@ public class DriverService {
         }
     }
 
-    public Result<DriverVO> getDriverById(String driverId) {
+    public Result<DriverVO> getDriverById(Long driverId) {
         Result<DriverInfo> driverResult = driverFeignClient.queryDriverByDriverId(driverId);
         DriverInfo unwrap = driverResult.unwrap();
         return Result.success(convertDriverToVO(unwrap));
@@ -109,15 +112,15 @@ public class DriverService {
         }
     }
 
-    public Result<?> offline(String driverId) {
+    public Result<?> offline(Long driverId) {
         return driverFeignClient.Offline(driverId);
     }
 
-    public Result<?> online(String driverId) {
+    public Result<?> online(Long driverId) {
         return driverFeignClient.Online(driverId);
     }
 
-    public DriverSettingVO queryDriverSetting(String driverId) {
+    public DriverSettingVO queryDriverSetting(Long driverId) {
         Result<DriverSet> driverSettings = driverFeignClient.queryDriverSettings(driverId);
         DriverSettingVO driverSettingVO = new DriverSettingVO();
         BeanUtils.copyProperties(driverSettings, driverSettingVO);

@@ -19,6 +19,7 @@ public class AuthSecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .anyRequest().denyAll()
                 )
+
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );

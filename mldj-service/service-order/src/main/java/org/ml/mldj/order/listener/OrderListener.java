@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 public class OrderListener {
     @Autowired
     OrderInfoService orderInfoService;
-    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(MqConst.QUEUE_ORDER_CREATED),
-            exchange = @Exchange(MqConst.EXCHANGE_ORDER)
-    ))
-    public void orderCreated(OrderCreateForm form) {
-
-    }
+//    @RabbitListener(bindings = @QueueBinding(
+//            value = @Queue(MqConst.QUEUE_ORDER_CREATED),
+//            exchange = @Exchange(MqConst.EXCHANGE_ORDER)
+//    ))
+//    public void orderCreated(OrderCreateForm form) {
+//
+//    }
 }

@@ -51,5 +51,7 @@ public interface SysRoleFeignClient {
 
     @Operation(summary = "根据用户获取角色数据")
     @GetMapping("/sysRole/toAssign/{userId}")
-    Result<Map<String, Object>> toAssign(@PathVariable("userId") Long userId);
+    Result<List<SysRole>> toAssign(@PathVariable("userId") Long userId);
+
+
 }

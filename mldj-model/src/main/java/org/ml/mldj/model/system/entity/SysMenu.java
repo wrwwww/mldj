@@ -81,7 +81,7 @@ public class SysMenu implements Serializable {
      * 排序值
      */
     @Schema(description = "排序值")
-    private Integer sortValue;
+    private Integer sort;
 
     /**
      * 状态：0-禁用，1-启用
