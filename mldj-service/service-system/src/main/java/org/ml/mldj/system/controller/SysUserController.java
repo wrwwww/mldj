@@ -1,6 +1,5 @@
 package org.ml.mldj.system.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.common.PageQuery;
@@ -30,21 +29,21 @@ public class SysUserController {
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysUser sysUser) {
         boolean ok = sysUserService.save(sysUser);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "更新用户")
     @PutMapping("/update")
     public Result<?> update(@RequestBody SysUser sysUser) {
         boolean ok = sysUserService.updateById(sysUser);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "删除用户")
     @DeleteMapping("/remove/{id}")
     public Result<?> remove(@PathVariable("id") Long id) {
         boolean ok = sysUserService.removeById(id);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取分页列表")
@@ -58,7 +57,7 @@ public class SysUserController {
     @GetMapping("/updateStatus/{id}/{status}")
     public Result<?> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
         boolean ok = sysUserService.updateStatus(id, status);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取用户")

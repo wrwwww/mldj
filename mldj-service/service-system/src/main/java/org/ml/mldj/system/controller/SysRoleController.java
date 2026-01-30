@@ -47,21 +47,21 @@ public class SysRoleController {
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysRole sysRole) {
         boolean ok = sysRoleService.save(sysRole);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "修改角色")
     @PutMapping("/update")
     public Result<?> update(@RequestBody SysRole sysRole) {
         boolean ok = sysRoleService.updateById(sysRole);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "删除角色")
     @DeleteMapping("/remove/{id}")
     public Result<?> remove(@PathVariable("id") Long id) {
         boolean ok = sysRoleService.removeById(id);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取分页列表")
@@ -75,7 +75,7 @@ public class SysRoleController {
     @DeleteMapping("/batchRemove")
     public Result<?> batchRemove(@RequestBody List<Long> idList) {
         boolean ok = sysRoleService.removeBatchByIds(idList);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "根据用户分配角色")

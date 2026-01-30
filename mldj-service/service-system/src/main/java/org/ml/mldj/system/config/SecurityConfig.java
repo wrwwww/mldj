@@ -25,13 +25,13 @@ public class SecurityConfig {
 
         // 禁用 CSRF（REST API 通常不需要）
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/code-gen/**", "/v3/api-docs").permitAll().anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).exceptionHandling((exceptionHandling) ->
                         exceptionHandling.accessDeniedHandler(jsonAccessDeniedHandler)
                                 .authenticationEntryPoint(jsonAuthenticationEntryPoint)
                 ).sessionManagement(sm ->
-                sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        );
+                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
 
         return http.build();
     }

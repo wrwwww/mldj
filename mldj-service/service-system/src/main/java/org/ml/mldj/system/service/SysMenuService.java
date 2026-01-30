@@ -1,6 +1,5 @@
 package org.ml.mldj.system.service;
 
-import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.system.entity.SysMenu;
 import org.ml.mldj.model.system.vo.AssginMenuVo;
 import org.ml.mldj.model.system.vo.MenuTreeVO;

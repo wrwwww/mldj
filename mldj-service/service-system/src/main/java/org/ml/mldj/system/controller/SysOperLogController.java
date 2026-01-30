@@ -43,6 +43,6 @@ public class SysOperLogController {
     @PostMapping("/saveSysLog")
     public Result<?> saveSysLog(@RequestBody SysOperLog sysOperLog) {
         boolean ok = sysOperLogService.save(sysOperLog);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 }

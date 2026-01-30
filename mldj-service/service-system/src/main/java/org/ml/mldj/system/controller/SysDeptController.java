@@ -42,7 +42,7 @@ public class SysDeptController {
     @GetMapping("/updateStatus/{id}/{status}")
     public Result<?> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
         boolean ok = sysDeptService.updateStatus(id, status);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取")
@@ -56,20 +56,20 @@ public class SysDeptController {
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysDept sysDept) {
         boolean ok = sysDeptService.save(sysDept);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "修改")
     @PutMapping("/update")
     public Result<?> update(@RequestBody SysDept sysDept) {
         boolean ok = sysDeptService.updateById(sysDept);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "删除")
     @DeleteMapping("/remove/{id}")
     public Result<?> remove(@PathVariable("id") Long id) {
         boolean ok = sysDeptService.removeById(id);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 }

@@ -36,7 +36,7 @@ public class SysLoginLogController {
     @PostMapping("/recordLoginLog")
     public Result<?> recordLoginLog(@RequestBody SysLoginLog sysLoginLog) {
         boolean ok = sysLoginLogService.save(sysLoginLog);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取")

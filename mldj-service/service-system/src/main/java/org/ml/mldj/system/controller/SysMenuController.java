@@ -33,19 +33,19 @@ public class SysMenuController {
     @DeleteMapping("/remove/{id}")
     public Result<?> remove(@PathVariable("id") Long id) {
         boolean ok = sysMenuService.removeById(id);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysMenu sysMenu) {
         boolean ok = sysMenuService.save(sysMenu);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @PutMapping("/update")
     public Result<?> update(@RequestBody SysMenu sysMenu) {
         boolean ok = sysMenuService.updateById(sysMenu);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @GetMapping("/findNodes")

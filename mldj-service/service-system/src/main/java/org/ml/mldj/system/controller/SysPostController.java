@@ -38,7 +38,7 @@ public class SysPostController {
     @GetMapping("/updateStatus/{id}/{status}")
     public Result<?> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
         boolean ok = sysPostService.updateStatus(id, status);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取全部岗位")
@@ -51,7 +51,7 @@ public class SysPostController {
     @DeleteMapping("/remove/{id}")
     public Result<?> remove(@PathVariable("id") Long id) {
         boolean ok = sysPostService.removeById(id);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取")
@@ -65,13 +65,13 @@ public class SysPostController {
     @PostMapping("/save")
     public Result<?> save(@RequestBody SysPost sysPost) {
         boolean ok = sysPostService.save(sysPost);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "修改岗位")
     @PutMapping("/update")
     public Result<?> update(@RequestBody SysPost sysPost) {
         boolean ok = sysPostService.updateById(sysPost);
-        return ok ? Result.success() : Result.fail();
+        return Result.success();
     }
 }
