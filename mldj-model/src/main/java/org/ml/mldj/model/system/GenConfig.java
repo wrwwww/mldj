@@ -28,7 +28,7 @@ public class GenConfig {
 
     /** 模块名，如 system */
     private String moduleName;
-
+    private String packageName;
     /** 实体名（大驼峰），如 User */
     private String entityName;
 

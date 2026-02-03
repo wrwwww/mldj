@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.ml.mldj.common.exception.BizException;
 import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.system.Datasource;
@@ -25,15 +26,15 @@ public class DatasourceService extends ServiceImpl<DatasourceMapper, Datasource>
 
     private final DatasourceMapper datasourceMapper;
 
-    public boolean testConnection(Datasource datasource) {
+    public void testConnection(Datasource datasource) {
         Connection conn = null;
         try {
             String url = buildJdbcUrl(datasource);
             conn = DriverManager.getConnection(url, datasource.getUsername(), datasource.getPassword());
-            return conn.isValid(5);
+            conn.isValid(5);
         } catch (Exception e) {
             log.error("测试数据库连接失败", e);
-            return false;
+            throw new BizException("数据库连接失败" + e.getMessage());
         } finally {
             if (conn != null) {
                 try {
@@ -45,12 +46,12 @@ public class DatasourceService extends ServiceImpl<DatasourceMapper, Datasource>
         }
     }
 
-    public boolean testConnection(String id) {
+    public void testConnection(String id) {
         Datasource datasource = getById(id);
         if (datasource == null) {
             throw new RuntimeException("数据源不存在");
         }
-        return testConnection(datasource);
+        testConnection(datasource);
     }
 
     public List<TableMeta> getTables(String datasourceId) {
@@ -148,7 +149,7 @@ public class DatasourceService extends ServiceImpl<DatasourceMapper, Datasource>
                     .like(query.getFilters().getName() != null, Datasource::getName, query.getFilters().getName());
         }
 
-        mpPage=datasourceMapper.selectPage(mpPage, queryWrapper);
+        mpPage = datasourceMapper.selectPage(mpPage, queryWrapper);
         return PageVO.buildPageVO(mpPage);
 
     }

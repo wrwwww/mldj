@@ -57,9 +57,9 @@ public class CodeGenController {
     }
 
     @PostMapping("/datasource/{id}/test")
-    public Result<Boolean> testDatasource(@PathVariable String id) {
-        boolean success = datasourceService.testConnection(id);
-        return Result.success(success);
+    public Result<?> testDatasource(@PathVariable String id) {
+         datasourceService.testConnection(id);
+        return Result.success();
     }
 
     @GetMapping("/datasource/{id}/tables")
@@ -85,10 +85,11 @@ public class CodeGenController {
         return Result.success(genConfigService.getById(id));
     }
 
-    @PostMapping("/config")
-    public Result<Void> saveConfig(@RequestBody GenConfig config) {
+    @PutMapping("/config")
+    public Result<GenConfig> saveConfig(@RequestBody GenConfig config) {
         genConfigService.saveOrUpdate(config);
-        return Result.success();
+
+        return Result.success(config);
     }
 
     @DeleteMapping("/config/{id}")

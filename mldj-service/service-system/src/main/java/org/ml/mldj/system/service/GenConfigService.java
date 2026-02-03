@@ -55,7 +55,7 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
             result.put("backend", generateBackend(config));
 
             // 生成SQL
-            result.put("sql", generateSql(config));
+//            result.put("sql", generateSql(config));
 
         } catch (Exception e) {
             throw new RuntimeException("代码生成失败: " + e.getMessage(), e);
@@ -75,16 +75,19 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         data.put("moduleName", config.getModuleName());
 
         // 生成 index.vue
-        Template indexTemplate = freeMarkerConfig.getTemplate("frontend/index.vue.ftl");
+        Template indexTemplate = freeMarkerConfig.getTemplate("vue-index.ftl");
         frontend.put("index.vue", renderTemplate(indexTemplate, data));
 
         // 生成 index.api.ts
-        Template apiTemplate = freeMarkerConfig.getTemplate("frontend/index.api.ts.ftl");
+        Template apiTemplate = freeMarkerConfig.getTemplate("vue-api.ftl");
         frontend.put("index.api.ts", renderTemplate(apiTemplate, data));
 
         // 生成 modal-form.vue
-        Template formTemplate = freeMarkerConfig.getTemplate("frontend/modal-form.vue.ftl");
+        Template formTemplate = freeMarkerConfig.getTemplate("vue-modal-form.ftl");
         frontend.put("modal-form.vue", renderTemplate(formTemplate, data));
+
+        Template typesTemplate = freeMarkerConfig.getTemplate("vue-types.ftl");
+        frontend.put("types.vue", renderTemplate(typesTemplate, data));
 
         return frontend;
     }
@@ -98,18 +101,22 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         data.put("moduleName", config.getModuleName());
         data.put("title", config.getTitle());
         data.put("routePath", config.getRoutePath());
+        data.put("packageName", config.getPackageName());
 
         // 生成 Controller.java
-        Template controllerTemplate = freeMarkerConfig.getTemplate("backend/Controller.java.ftl");
+        Template controllerTemplate = freeMarkerConfig.getTemplate("controller.ftl");
         backend.put("Controller.java", renderTemplate(controllerTemplate, data));
 
         // 生成 Service.java
-        Template serviceTemplate = freeMarkerConfig.getTemplate("backend/Service.java.ftl");
+        Template serviceTemplate = freeMarkerConfig.getTemplate("service.ftl");
         backend.put("Service.java", renderTemplate(serviceTemplate, data));
 
         // 生成 Entity.java
-        Template entityTemplate = freeMarkerConfig.getTemplate("backend/Entity.java.ftl");
+        Template entityTemplate = freeMarkerConfig.getTemplate("entity.ftl");
         backend.put("Entity.java", renderTemplate(entityTemplate, data));
+        // 生成mapper.java
+        Template mapperTemplate = freeMarkerConfig.getTemplate("mapper.ftl");
+        backend.put("Mapper.java", renderTemplate(mapperTemplate, data));
 
         return backend;
     }
@@ -119,7 +126,7 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         data.put("config", config);
         data.put("tableName", config.getTableName());
 
-        Template sqlTemplate = freeMarkerConfig.getTemplate("sql/table.sql.ftl");
+        Template sqlTemplate = freeMarkerConfig.getTemplate("sql.ftl");
         return renderTemplate(sqlTemplate, data);
     }
 
