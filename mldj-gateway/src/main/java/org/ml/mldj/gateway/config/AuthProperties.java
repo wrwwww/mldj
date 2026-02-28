@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
 
-@ConfigurationProperties(prefix= "gateway.exclude-paths")
+//@ConfigurationProperties(prefix= "gateway.exclude-paths")
 public class AuthProperties {
 
     List<String> excludePaths;

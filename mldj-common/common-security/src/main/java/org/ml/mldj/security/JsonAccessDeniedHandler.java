@@ -25,7 +25,7 @@ public class JsonAccessDeniedHandler implements AccessDeniedHandler {
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType("application/json;charset=UTF-8");
-        Result<?> result = Result.error(ResultCode.SYS_ERROR);
+        Result<?> result = Result.error(ResultCode.ACCESS_DENIED);
         objectMapper.writeValue(response.getWriter(), result);
     }
 }

@@ -18,4 +18,5 @@ public class PageRequest {
     @Min(1)
     @Schema(description = "页数")
     private int pageNum = 1;
+
 }

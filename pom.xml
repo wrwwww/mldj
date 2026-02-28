@@ -58,11 +58,14 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <!--配置dependencyManagement锁定依赖的版本-->
     <dependencyManagement>
-
         <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.2.1-jre</version> <!-- or 33.2.0-android for Android -->
+            </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

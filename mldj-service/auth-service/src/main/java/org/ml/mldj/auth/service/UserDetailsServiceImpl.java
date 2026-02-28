@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<SysRole> sysRoles = userMapper.querySysRoleByUserId(user.getId());
         HashSet<String> set = new HashSet<>();
         List<Long> list = sysRoles.stream().map(e -> {
-            set.add("ROLE_"+e.getRoleCode());
+            set.add("ROLE_"+e.getCode());
             return e.getId();
         }).toList();
         List<SysMenu> menuList = userMapper.queryMenuByRoles(list);

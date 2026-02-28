@@ -19,52 +19,17 @@ import org.springframework.web.bind.annotation.*;
  * @since 2025-12-26
  */
 @RestController
-@RequestMapping("/sysUser")
+@RequestMapping("/system/user")
 public class SysUserController {
 
     @Autowired
     private SysUserService sysUserService;
 
-    @Operation(summary = "保存用户")
-    @PostMapping("/save")
-    public Result<?> save(@RequestBody SysUser sysUser) {
-        boolean ok = sysUserService.save(sysUser);
-        return Result.success();
-    }
-
-    @Operation(summary = "更新用户")
-    @PutMapping("/update")
-    public Result<?> update(@RequestBody SysUser sysUser) {
-        boolean ok = sysUserService.updateById(sysUser);
-        return Result.success();
-    }
-
-    @Operation(summary = "删除用户")
-    @DeleteMapping("/remove/{id}")
-    public Result<?> remove(@PathVariable("id") Long id) {
-        boolean ok = sysUserService.removeById(id);
-        return Result.success();
-    }
-
     @Operation(summary = "获取分页列表")
-    @PostMapping
-    public Result<PageVO<SysUser>> findPage(@RequestBody PageQuery<SysUserQuery> sysUserQuery) {
+    @GetMapping("/page")
+    public Result<PageVO<SysUser>> page(PageQuery<SysUserQuery> sysUserQuery) {
         PageVO<SysUser> pageVO = sysUserService.page(sysUserQuery);
         return Result.success(pageVO);
-    }
-
-    @Operation(summary = "更新状态")
-    @GetMapping("/updateStatus/{id}/{status}")
-    public Result<?> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
-        boolean ok = sysUserService.updateStatus(id, status);
-        return Result.success();
-    }
-
-    @Operation(summary = "获取用户")
-    @GetMapping("/getById/{id}")
-    public Result<SysUser> getById(@PathVariable("id") Long id) {
-        SysUser user = sysUserService.getById(id);
-        return Result.success(user);
     }
 
     @Operation(summary = "根据用户名查询用户")
@@ -72,5 +37,41 @@ public class SysUserController {
     public Result<SysUser> queryByUsername(@RequestParam("username") String username) {
         SysUser user = sysUserService.queryByUsername(username);
         return Result.success(user);
+    }
+
+    /**
+     * 根据ID查询用户表
+     */
+    @GetMapping("/{id}")
+    public Result<SysUser> getById(@PathVariable String id) {
+        SysUser sysUser = sysUserService.getById(id);
+        return Result.success(sysUser);
+    }
+
+    /**
+     * 新增用户表
+     */
+    @PostMapping
+    public Result<String> save(@RequestBody SysUser sysUser) {
+        sysUserService.save(sysUser);
+        return Result.success();
+    }
+
+    /**
+     * 修改用户表
+     */
+    @PutMapping
+    public Result<?> update(@RequestBody SysUser sysUser) {
+        sysUserService.update(sysUser);
+        return Result.success();
+    }
+
+    /**
+     * 删除用户表
+     */
+    @DeleteMapping("/{id}")
+    public Result<?> delete(@PathVariable String id) {
+        sysUserService.delete(id);
+        return Result.success();
     }
 }

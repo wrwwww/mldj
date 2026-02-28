@@ -21,7 +21,7 @@ public class ${entityName}Service {
     /**
      * 分页查询${title}
      */
-    public PageResult<${entityName}> page(Integer page, Integer pageSize<#if searchColumns?has_content>, <#list searchColumns as column>${column.javaType} ${column.fieldName}<#if column_has_next>, </#if></#list></#if>) {
+    public PageVO<${entityName}> page(Integer page, Integer pageSize<#if searchColumns?has_content>, <#list searchColumns as column>${column.javaType} ${column.fieldName}<#if column_has_next>, </#if></#list></#if>) {
         // 构建查询条件
         QueryWrapper<${entityName}> queryWrapper = new QueryWrapper<>();
         
@@ -40,8 +40,8 @@ public class ${entityName}Service {
         // 分页查询
         Page<${entityName}> pageInfo = new Page<>(page, pageSize);
         Page<${entityName}> result = ${entityName?uncap_first}Mapper.selectPage(pageInfo, queryWrapper);
-        
-        return new PageResult<>(result.getRecords(), result.getTotal(), page, pageSize);
+
+        return PageVO.buildPageVO(result);
     }
 
     /**
@@ -54,10 +54,7 @@ public class ${entityName}Service {
     /**
      * 新增${title}
      */
-    public String save(${entityName} ${entityName?uncap_first}) {
-        ${entityName?uncap_first}.setId(UUID.randomUUID().toString());
-        ${entityName?uncap_first}.setCreateTime(LocalDateTime.now());
-        ${entityName?uncap_first}.setUpdateTime(LocalDateTime.now());
+    public Long save(${entityName} ${entityName?uncap_first}) {
         ${entityName?uncap_first}Mapper.insert(${entityName?uncap_first});
         return ${entityName?uncap_first}.getId();
     }
@@ -66,7 +63,6 @@ public class ${entityName}Service {
      * 修改${title}
      */
     public void update(${entityName} ${entityName?uncap_first}) {
-        ${entityName?uncap_first}.setUpdateTime(LocalDateTime.now());
         ${entityName?uncap_first}Mapper.updateById(${entityName?uncap_first});
     }
 

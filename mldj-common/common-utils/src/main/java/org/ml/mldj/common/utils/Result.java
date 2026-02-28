@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Result<T> implements Serializable {
     private int code;
-    private String msg;
+    private String message;
     private T data;
 
     public static <T> Result<T> success() {

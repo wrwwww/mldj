@@ -19,9 +19,7 @@ public class MenuTreeVO {
     private String name;
     private String path;
     private String component;
-    private String icon;
     private Integer sort;
-    private Integer visible;
     private String perms;
     private Integer menuType;
 
@@ -30,10 +28,19 @@ public class MenuTreeVO {
 
     // 前端需要的额外字段
     private String redirect;
-    private Boolean hidden;
+
     private Boolean alwaysShow;
 
     private String title;
     private Boolean noCache;
     private String link;
+    private Meta meta;
+
+    @Data
+    @Builder
+    public static class Meta {
+        private String titleI18nKey;
+        private String icon;
+        private Integer hideInMenu;
+    }
 }

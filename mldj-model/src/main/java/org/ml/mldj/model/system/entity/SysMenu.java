@@ -99,7 +99,22 @@ public class SysMenu implements Serializable {
      * 是否隐藏：0-显示，1-隐藏
      */
     @Schema(description = "是否隐藏：0-显示，1-隐藏")
-    private Integer isHide;
+    private Integer hideInMenu;
+
+    /**
+     * 是否隐藏：0-显示，1-隐藏
+     */
+    @Schema(description = "")
+    private String link;
+
+    @Schema(description = "")
+    private String linkMode;
+    @Schema(description = "")
+    private Integer keepAlive;
+
+    @Schema(description = "")
+    private String titleI18nKey;
+
 
     /**
      * 创建时间

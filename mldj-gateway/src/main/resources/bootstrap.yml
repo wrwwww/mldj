@@ -1,11 +1,6 @@
-server:
-  port: 8201
-  servlet:
-    context-path: /
-
 spring:
   application:
-    name: "gateway"
+    name: "server-gateway"
   cloud:
     nacos:
       config:
@@ -22,6 +17,9 @@ spring:
         heart-beat-interval: 1000
         heart-beat-timeout: 1000
         group: DEFAULT_GROUP
+  config:
+    import:
+      - nacos:${spring.application.name}-dev?group=DEFAULT_GROUP&refresh=true
     sentinel:
       transport:
         dashboard:

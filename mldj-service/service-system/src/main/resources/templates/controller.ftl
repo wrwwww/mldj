@@ -23,50 +23,59 @@ public class ${entityName}Controller {
      * 分页查询${title}
      */
     @GetMapping("/page")
-    public ApiResult<PageResult<${entityName}>> page(
-            @RequestParam(defaultValue = "1") Integer page,
+    public Result<PageResult<${entityName}>> page(
+            @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize<#if searchColumns?has_content>,
 <#list searchColumns as column>
             @RequestParam(required = false) ${column.javaType} ${column.fieldName}<#if column_has_next>,</#if>
 </#list></#if>) {
         
         PageResult<${entityName}> result = ${entityName?uncap_first}Service.page(page, pageSize<#if searchColumns?has_content>, <#list searchColumns as column>${column.fieldName}<#if column_has_next>, </#if></#list></#if>);
-        return ApiResult.success(result);
+        return Result.success(result);
+    }
+
+    /**
+     * ${title}列表
+     */
+    @GetMapping("/list")
+    public Result<List<${entityName}>> list() {
+        List<${entityName}> list = ${entityName?uncap_first}Service.list();
+        return Result.success(list);
     }
 
     /**
      * 根据ID查询${title}
      */
     @GetMapping("/{id}")
-    public ApiResult<${entityName}> getById(@PathVariable String id) {
+    public Result<${entityName}> getById(@PathVariable String id) {
         ${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
-        return ApiResult.success(${entityName?uncap_first});
+        return Result.success(${entityName?uncap_first});
     }
 
     /**
      * 新增${title}
      */
     @PostMapping
-    public ApiResult<String> save(@RequestBody ${entityName} ${entityName?uncap_first}) {
-        String id = ${entityName?uncap_first}Service.save(${entityName?uncap_first});
-        return ApiResult.success(id);
+    public Result<?> save(@RequestBody ${entityName} ${entityName?uncap_first}) {
+        ${entityName?uncap_first}Service.save(${entityName?uncap_first});
+        return Result.success();
     }
 
     /**
      * 修改${title}
      */
     @PutMapping
-    public ApiResult<Void> update(@RequestBody ${entityName} ${entityName?uncap_first}) {
+    public Result<?> update(@RequestBody ${entityName} ${entityName?uncap_first}) {
         ${entityName?uncap_first}Service.update(${entityName?uncap_first});
-        return ApiResult.success();
+        return Result.success();
     }
 
     /**
      * 删除${title}
      */
     @DeleteMapping("/{id}")
-    public ApiResult<Void> delete(@PathVariable String id) {
+    public Result<?> delete(@PathVariable String id) {
         ${entityName?uncap_first}Service.delete(id);
-        return ApiResult.success();
+        return Result.success();
     }
 }

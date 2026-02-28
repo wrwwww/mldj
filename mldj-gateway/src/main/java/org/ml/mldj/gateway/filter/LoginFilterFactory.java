@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@Component
-@EnableConfigurationProperties(AuthProperties.class)
+//@Component
+//@EnableConfigurationProperties(AuthProperties.class)
 public class LoginFilterFactory extends AbstractGatewayFilterFactory {
 
     final AntPathMatcher antPathMatcher = new AntPathMatcher();

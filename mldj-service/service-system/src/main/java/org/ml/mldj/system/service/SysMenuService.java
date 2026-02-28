@@ -83,56 +83,56 @@ public class SysMenuService {
         return sysRoleMenuMapper.selectMenuIdsByRoleId(roleId);
     }
 
-    /**
-     * 构建菜单树结构
-     */
-    public List<MenuTreeVO> buildMenuTree(List<SysMenu> menuList) {
-        if (menuList == null || menuList.isEmpty()) {
-            return Collections.emptyList();
-        }
+//    /**
+//     * 构建菜单树结构
+//     */
+//    public List<MenuTreeVO> buildMenuTree(List<SysMenu> menuList) {
+//        if (menuList == null || menuList.isEmpty()) {
+//            return Collections.emptyList();
+//        }
+//
+//        // 1. 顶级菜单
+//        List<MenuTreeVO> rootMenus = menuList.stream()
+//                .filter(menu -> menu.getParentId() == null || menu.getParentId() == 0)
+//                .map(this::convertToTreeVO)
+//                .sorted(Comparator.comparing(MenuTreeVO::getSort, Comparator.nullsLast(Integer::compareTo)))
+//                .collect(Collectors.toList());
+//
+//        // 2. 递归子节点
+//        for (MenuTreeVO root : rootMenus) {
+//            buildChildren(root, menuList);
+//        }
+//        return rootMenus;
+//    }
+//
+//    private void buildChildren(MenuTreeVO parent, List<SysMenu> allMenus) {
+//        List<MenuTreeVO> children = allMenus.stream()
+//                .filter(menu -> parent.getId().equals(menu.getParentId()))
+//                .map(this::convertToTreeVO)
+//                .sorted(Comparator.comparing(MenuTreeVO::getSort, Comparator.nullsLast(Integer::compareTo)))
+//                .collect(Collectors.toList());
+//
+//        if (!children.isEmpty()) {
+//            parent.setChildren(children);
+//            for (MenuTreeVO child : children) {
+//                buildChildren(child, allMenus);
+//            }
+//        }
+//    }
 
-        // 1. 顶级菜单
-        List<MenuTreeVO> rootMenus = menuList.stream()
-                .filter(menu -> menu.getParentId() == null || menu.getParentId() == 0)
-                .map(this::convertToTreeVO)
-                .sorted(Comparator.comparing(MenuTreeVO::getSort, Comparator.nullsLast(Integer::compareTo)))
-                .collect(Collectors.toList());
-
-        // 2. 递归子节点
-        for (MenuTreeVO root : rootMenus) {
-            buildChildren(root, menuList);
-        }
-        return rootMenus;
-    }
-
-    private void buildChildren(MenuTreeVO parent, List<SysMenu> allMenus) {
-        List<MenuTreeVO> children = allMenus.stream()
-                .filter(menu -> parent.getId().equals(menu.getParentId()))
-                .map(this::convertToTreeVO)
-                .sorted(Comparator.comparing(MenuTreeVO::getSort, Comparator.nullsLast(Integer::compareTo)))
-                .collect(Collectors.toList());
-
-        if (!children.isEmpty()) {
-            parent.setChildren(children);
-            for (MenuTreeVO child : children) {
-                buildChildren(child, allMenus);
-            }
-        }
-    }
-
-    private MenuTreeVO convertToTreeVO(SysMenu menu) {
-        return MenuTreeVO.builder()
-                .id(menu.getId())
-                .parentId(menu.getParentId())
-                .name(menu.getName())
-                .path(menu.getPath())
-                .component(menu.getComponent())
-                .icon(menu.getIcon())
-                .sort(menu.getSort())
-                .visible(menu.getIsHide())
-                .perms(menu.getPerms())
-                .menuType(menu.getType())
-                .build();
-    }
+//    private MenuTreeVO convertToTreeVO(SysMenu menu) {
+//        return MenuTreeVO.builder()
+//                .id(menu.getId())
+//                .parentId(menu.getParentId())
+//                .name(menu.getName())
+//                .path(menu.getPath())
+//                .component(menu.getComponent())
+//                .icon(menu.getIcon())
+//                .sort(menu.getSort())
+//                .visible(menu.getIsHide())
+//                .perms(menu.getPerms())
+//                .menuType(menu.getType())
+//                .build();
+//    }
 
 }

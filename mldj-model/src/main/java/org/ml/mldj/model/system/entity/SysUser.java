@@ -89,6 +89,12 @@ public class SysUser implements Serializable {
     @Schema(description = "状态：0-禁用，1-启用")
     private Integer status;
 
+    @Schema(description = "性别")
+    private String gender;
+    @Schema(description = "邮箱")
+    private String email;
+    @Schema(description = "昵称")
+    private String nickname;
     /**
      * 创建时间
      */

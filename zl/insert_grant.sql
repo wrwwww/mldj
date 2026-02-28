@@ -1,9 +1,9 @@
-insert into mailang.sys_role(role_name, role_code, description)
+insert into mailang.sys_role(name, code, remark)
     VALUE ('超级管理员', 'ADMIN',
            '超管');
 ;
 insert into mailang.sys_user_role(role_id, user_id) value (
-                                                               (select id from mailang.sys_role where role_code = 'ADMIN'),
+                                                               (select id from mailang.sys_role where code = 'ADMIN'),
                                                                (select id from mailang.sys_user where username = 'admin'));
 select *
 from mailang.sys_user_role;

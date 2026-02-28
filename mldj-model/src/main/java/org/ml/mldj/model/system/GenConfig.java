@@ -79,5 +79,8 @@ public class GenConfig {
 
         /** 是否必填 */
         private Boolean required;
+
+        /** 搜索匹配方式: eq/like/like_left/like_right */
+        private String searchMatchType = "eq";
     }
 }

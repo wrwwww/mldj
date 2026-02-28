@@ -39,19 +39,19 @@ public class SysRole implements Serializable {
      * 角色名称
      */
     @Schema(description = "角色名称")
-    private String roleName;
+    private String name;
 
     /**
      * 角色编码
      */
     @Schema(description = "角色编码")
-    private String roleCode;
+    private String code;
 
     /**
      * 角色描述
      */
     @Schema(description = "角色描述")
-    private String description;
+    private String remark;
 
     /**
      * 创建时间
@@ -69,5 +69,10 @@ public class SysRole implements Serializable {
      * 逻辑删除标志 0=未删除 1=已删除
      */
     @Schema(description = "逻辑删除标志 0=未删除 1=已删除")
-    private Boolean isDeleted;
+    private int isDeleted;
+    /**
+     * 逻辑删除标志 0=未删除 1=已删除
+     */
+    @Schema(description = "")
+    private int status;
 }

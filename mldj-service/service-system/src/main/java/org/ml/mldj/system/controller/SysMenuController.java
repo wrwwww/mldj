@@ -61,10 +61,10 @@ public class SysMenuController {
     /**
      * 根据角色IDS查询菜单并构建菜单树（给内部服务用）
      */
-    @GetMapping("/roles")
-    public Result<List<MenuTreeVO>> queryMenuByRoles(@RequestParam("roleIds") List<Long> roleIds) {
-        List<SysMenu> menus = sysMenuService.queryMenuByRoles(roleIds);
-        List<MenuTreeVO> tree = sysMenuService.buildMenuTree(menus);
-        return Result.success(tree);
-    }
+//    @GetMapping("/roles")
+//    public Result<List<MenuTreeVO>> queryMenuByRoles(@RequestParam("roleIds") List<Long> roleIds) {
+//        List<SysMenu> menus = sysMenuService.queryMenuByRoles(roleIds);
+//        List<MenuTreeVO> tree = sysMenuService.buildMenuTree(menus);
+//        return Result.success(tree);
+//    }
 }

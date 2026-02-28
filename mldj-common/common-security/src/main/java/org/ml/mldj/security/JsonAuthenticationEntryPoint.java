@@ -25,7 +25,7 @@ public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.setStatus(HttpStatus.OK.value()); // 👈 微服务常用：业务 401，HTTP 200
         response.setContentType("application/json;charset=UTF-8");
-        Result<?> result = Result.error(ResultCode.SYS_ERROR);
+        Result<?> result = Result.error(ResultCode.UN_AUTHENTICATION);
         objectMapper.writeValue(response.getWriter(), result);
     }
 }

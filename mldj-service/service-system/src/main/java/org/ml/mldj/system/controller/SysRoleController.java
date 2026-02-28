@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2025-12-26
  */
 @RestController
-@RequestMapping("/sysRole")
+@RequestMapping("/system/role")
 public class SysRoleController {
     @Autowired
     SysRoleService sysRoleService;
@@ -36,45 +36,12 @@ public class SysRoleController {
         return Result.success(list);
     }
 
-    @Operation(summary = "获取")
-    @GetMapping("/getById/{id}")
-    public Result<SysRole> getById(@PathVariable("id") Long id) {
-        SysRole role = sysRoleService.getById(id);
-        return Result.success(role);
-    }
 
-    @Operation(summary = "新增角色")
-    @PostMapping("/save")
-    public Result<?> save(@RequestBody SysRole sysRole) {
-        boolean ok = sysRoleService.save(sysRole);
-        return Result.success();
-    }
-
-    @Operation(summary = "修改角色")
-    @PutMapping("/update")
-    public Result<?> update(@RequestBody SysRole sysRole) {
-        boolean ok = sysRoleService.updateById(sysRole);
-        return Result.success();
-    }
-
-    @Operation(summary = "删除角色")
-    @DeleteMapping("/remove/{id}")
-    public Result<?> remove(@PathVariable("id") Long id) {
-        boolean ok = sysRoleService.removeById(id);
-        return Result.success();
-    }
-
-    @Operation(summary = "获取分页列表")
-    @PostMapping
-    public Result<PageVO<SysRole>> findPage(@RequestBody PageQuery<SysRoleQuery> roleQuery) {
-        PageVO<SysRole> pageVO = sysRoleService.page(roleQuery);
-        return Result.success(pageVO);
-    }
 
     @Operation(summary = "根据id列表删除")
     @DeleteMapping("/batchRemove")
     public Result<?> batchRemove(@RequestBody List<Long> idList) {
-        boolean ok = sysRoleService.removeBatchByIds(idList);
+         sysRoleService.removeBatchByIds(idList);
         return Result.success();
     }
 
@@ -87,9 +54,58 @@ public class SysRoleController {
     }
 
     @Operation(summary = "获取全部角色列表")
-    @GetMapping("/findAll")
-    public List<SysRole> findAll() {
+    @GetMapping("/list")
+    public List<SysRole> list() {
         return sysRoleService.list();
     }
+
+    /**
+     * 分页查询角色表
+     */
+    @GetMapping("/page")
+    public Result<PageVO<SysRole>> page(PageQuery<SysRole> pageQuery) {
+
+        return Result.success(sysRoleService.page(pageQuery));
+    }
+
+
+    /**
+     * 根据ID查询角色表
+     */
+    @GetMapping("/{id}")
+    public Result<SysRole> getById(@PathVariable String id) {
+        SysRole sysRole = sysRoleService.getById(id);
+        return Result.success(sysRole);
+    }
+
+    /**
+     * 新增角色表
+     */
+    @PostMapping
+    public Result<Long> save(@RequestBody SysRole sysRole) {
+        Long id = sysRoleService.save(sysRole);
+        return Result.success(id);
+    }
+
+    /**
+     * 修改角色表
+     */
+    @PutMapping
+    public Result<?> update(@RequestBody SysRole sysRole) {
+        sysRoleService.update(sysRole);
+        return Result.success();
+    }
+
+    /**
+     * 删除角色表
+     */
+    @DeleteMapping("/{id}")
+    public Result<?> delete(@PathVariable String id) {
+        sysRoleService.delete(id);
+        return Result.success();
+    }
+
+
+
 
 }

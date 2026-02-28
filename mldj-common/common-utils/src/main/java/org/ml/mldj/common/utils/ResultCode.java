@@ -5,6 +5,10 @@ import lombok.Getter;
 @Getter
 public enum ResultCode {
     SYS_ERROR(1001, "系统异常，请联系管理员!"),
+
+    UN_AUTHENTICATION(1002, "未登录"),
+    ACCESS_DENIED(1003, "权限不足拒绝访问"),
+
     PARAM_LOST(2001, "参数错误!"),
     DUPLICATE_DATA(2002, "改名称已存在"),
     DATA_NO_EXISTS(2003, "数据不存在"),
