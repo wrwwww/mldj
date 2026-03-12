@@ -50,6 +50,14 @@ public class GenConfig {
      */
     @Data
     public static class ColumnConfig {
+        private Boolean showInResponse;
+        private String searchFormType;
+        private String queryOperator;
+        private Boolean showInInsert;
+        private Boolean showInUpdate;
+        private Boolean disableInUpdate;
+        private String placeholder;
+        private String dictCode;
         /** 列名 */
         private String columnName;
 
@@ -80,7 +88,6 @@ public class GenConfig {
         /** 是否必填 */
         private Boolean required;
 
-        /** 搜索匹配方式: eq/like/like_left/like_right */
-        private String searchMatchType = "eq";
+
     }
 }

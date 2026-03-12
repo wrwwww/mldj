@@ -102,7 +102,7 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         data.put("title", config.getTitle());
         data.put("routePath", config.getRoutePath());
         data.put("packageName", config.getPackageName());
-
+        data.put("columns",config.getColumns());
         // 生成 Controller.java
         Template controllerTemplate = freeMarkerConfig.getTemplate("controller.ftl");
         backend.put("Controller.java", renderTemplate(controllerTemplate, data));
@@ -114,6 +114,16 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         // 生成 Entity.java
         Template entityTemplate = freeMarkerConfig.getTemplate("entity.ftl");
         backend.put("Entity.java", renderTemplate(entityTemplate, data));
+        // 生成 query.java
+        Template queryTemplate = freeMarkerConfig.getTemplate("query.ftl");
+        backend.put("Query.java", renderTemplate(queryTemplate, data));
+        Template voTemplate = freeMarkerConfig.getTemplate("vo.ftl");
+        backend.put("vo.java", renderTemplate(voTemplate, data));
+        // 生成 query.java
+        Template insertTemplate = freeMarkerConfig.getTemplate("insert.ftl");
+        backend.put("insert.java", renderTemplate(insertTemplate, data));        // 生成 query.java
+        Template updateTemplate = freeMarkerConfig.getTemplate("update.ftl");
+        backend.put("update.java", renderTemplate(updateTemplate, data));
         // 生成mapper.java
         Template mapperTemplate = freeMarkerConfig.getTemplate("mapper.ftl");
         backend.put("Mapper.java", renderTemplate(mapperTemplate, data));

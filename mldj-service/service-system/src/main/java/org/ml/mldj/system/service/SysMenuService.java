@@ -1,5 +1,10 @@
 package org.ml.mldj.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.ml.mldj.model.common.PageQuery;
+import org.ml.mldj.model.common.PageVO;
+import org.ml.mldj.model.system.dto.SysMenuQuery;
 import org.ml.mldj.model.system.entity.SysMenu;
 import org.ml.mldj.model.system.vo.AssginMenuVo;
 import org.ml.mldj.model.system.vo.MenuTreeVO;
@@ -36,9 +41,6 @@ public class SysMenuService {
         return sysMenuMapper.queryMenuByRoles(roleIds);
     }
 
-    public boolean save(SysMenu sysMenu) {
-        return sysMenuMapper.insert(sysMenu) > 0;
-    }
 
     public boolean updateById(SysMenu sysMenu) {
         return sysMenuMapper.updateById(sysMenu) > 0;
@@ -135,4 +137,90 @@ public class SysMenuService {
 //                .build();
 //    }
 
+    /**
+     * 分页查询角色表
+     */
+    public PageVO<SysMenu> page(PageQuery
+                                        <SysMenuQuery> pageQuery) {
+        Page<SysMenu> pageInfo = pageQuery.toPage();
+        // 构建查询条件
+        QueryWrapper<SysMenu> queryWrapper = new QueryWrapper<>();
+        SysMenuQuery filters = pageQuery.getFilters();
+
+
+        if(filters.getName()!=null){
+            queryWrapper.like("name",filters.getName());
+        }
+
+
+        if(filters.getType()!=null){
+            queryWrapper.like("type",filters.getType());
+        }
+
+
+        if(filters.getPath()!=null){
+            queryWrapper.like("path",filters.getPath());
+        }
+
+
+
+
+
+
+        if(filters.getStatus()!=null){
+            queryWrapper.like("status",filters.getStatus());
+        }
+
+
+        if(filters.getActive_menu()!=null){
+            queryWrapper.like("active_menu",filters.getActive_menu());
+        }
+
+
+
+
+        // 构建排序条件
+        if (pageQuery.hasSort()) {
+            pageQuery.getSorts().forEach(e -> {
+                String column = e.getUnderlineColumn();
+                if (e.isAscending()) {
+                    queryWrapper.orderByAsc(column);
+                } else {
+                    queryWrapper.orderByDesc(column);
+                }
+            });
+        }
+        // 分页查询
+        Page<SysMenu> result = sysMenuMapper.selectPage(pageInfo, queryWrapper);
+        return PageVO.buildPageVO(result);
+    }
+
+    /**
+     * 根据ID查询菜单表
+     */
+    public SysMenu getById(String id) {
+        return sysMenuMapper.selectById(id);
+    }
+
+    /**
+     * 新增菜单表
+     */
+    public Long save(SysMenu sysMenu) {
+        sysMenuMapper.insert(sysMenu);
+        return sysMenu.getId();
+    }
+
+    /**
+     * 修改菜单表
+     */
+    public void update(SysMenu sysMenu) {
+        sysMenuMapper.updateById(sysMenu);
+    }
+
+    /**
+     * 删除菜单表
+     */
+    public void delete(String id) {
+        sysMenuMapper.deleteById(id);
+    }
 }

@@ -1,17 +1,16 @@
 package org.ml.mldj.system.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Strings;
 import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
+import org.ml.mldj.model.system.dto.SysRoleQuery;
 import org.ml.mldj.model.system.entity.SysRole;
 import org.ml.mldj.model.system.vo.AssginRoleVo;
-import org.ml.mldj.system.config.QueryCondition;
+import org.ml.mldj.model.common.QueryCondition;
 import org.ml.mldj.system.mapper.SysRoleMapper;
 import org.ml.mldj.system.mapper.SysUserRoleMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +40,15 @@ public class SysRoleService {
     /**
      * 分页查询角色表
      */
-    public PageVO<SysRole> page(PageQuery<SysRole> pageQuery) {
+    public PageVO<SysRole> page(PageQuery<SysRoleQuery> pageQuery) {
         Page<SysRole> pageInfo = pageQuery.toPage();
         // 构建查询条件
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
-        SysRole filters = pageQuery.getFilters();
+        SysRoleQuery filters = pageQuery.getFilters();
         if (filters != null) {
             for (Field field : filters.getClass().getDeclaredFields()) {
                 try {
+                    field.setAccessible(true);
                     String o = (String)field.get(filters);
                     if (!Strings.isNullOrEmpty(o)) {
                         QueryCondition annotation = field.getAnnotation(QueryCondition.class);
@@ -58,6 +58,25 @@ public class SysRoleService {
                                     queryWrapper.eq(field.getName(),o);
                                 }
 
+                                case LIKE -> {
+                                    queryWrapper.like(field.getName(),o);
+                                }
+
+                                case GT -> {
+                                }
+                                case GE -> {
+                                }
+                                case LT -> {
+                                }
+                                case LE -> {
+                                }
+                                case BETWEEN -> {
+                                }
+
+                                case IS_NULL -> {
+                                }
+                                case IS_NOT_NULL -> {
+                                }
                             }
 
                         }
@@ -70,14 +89,16 @@ public class SysRoleService {
         }
 
         // 构建排序条件
-        pageQuery.getSorts().forEach(e -> {
-            String column = e.getUnderlineColumn();
-            if (e.isAscending()) {
-                queryWrapper.orderByAsc(column);
-            } else {
-                queryWrapper.orderByDesc(column);
-            }
-        });
+        if (pageQuery.hasSort()) {
+            pageQuery.getSorts().forEach(e -> {
+                String column = e.getUnderlineColumn();
+                if (e.isAscending()) {
+                    queryWrapper.orderByAsc(column);
+                } else {
+                    queryWrapper.orderByDesc(column);
+                }
+            });
+        }
         // 分页查询
         Page<SysRole> result = sysRoleMapper.selectPage(pageInfo, queryWrapper);
         return PageVO.buildPageVO(result);

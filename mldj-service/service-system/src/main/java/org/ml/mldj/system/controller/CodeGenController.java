@@ -85,7 +85,7 @@ public class CodeGenController {
         return Result.success(genConfigService.getById(id));
     }
 
-    @PostMapping("/config")
+    @RequestMapping("/config")
     public Result<GenConfig> saveConfig(@RequestBody GenConfig config) {
         genConfigService.saveOrUpdate(config);
 

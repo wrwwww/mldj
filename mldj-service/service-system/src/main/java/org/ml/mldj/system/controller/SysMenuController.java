@@ -1,6 +1,9 @@
 package org.ml.mldj.system.controller;
 
 import org.ml.mldj.common.utils.Result;
+import org.ml.mldj.model.common.PageQuery;
+import org.ml.mldj.model.common.PageVO;
+import org.ml.mldj.model.system.dto.SysMenuQuery;
 import org.ml.mldj.model.system.entity.SysMenu;
 import org.ml.mldj.model.system.vo.AssginMenuVo;
 import org.ml.mldj.model.system.vo.MenuTreeVO;
@@ -36,17 +39,9 @@ public class SysMenuController {
         return Result.success();
     }
 
-    @PostMapping("/save")
-    public Result<?> save(@RequestBody SysMenu sysMenu) {
-        boolean ok = sysMenuService.save(sysMenu);
-        return Result.success();
-    }
 
-    @PutMapping("/update")
-    public Result<?> update(@RequestBody SysMenu sysMenu) {
-        boolean ok = sysMenuService.updateById(sysMenu);
-        return Result.success();
-    }
+
+
 
     @GetMapping("/findNodes")
     public List<SysMenu> findNodes() {
@@ -67,4 +62,56 @@ public class SysMenuController {
 //        List<MenuTreeVO> tree = sysMenuService.buildMenuTree(menus);
 //        return Result.success(tree);
 //    }
+    /**
+     * 分页查询菜单表
+     */
+    @PostMapping("/page")
+    public Result<PageVO<SysMenu>> page(@RequestBody PageQuery<SysMenuQuery> pageQuery) {
+        return Result.success(sysMenuService.page(pageQuery));
+    }
+
+    /**
+     * 菜单表列表
+     */
+    @GetMapping("/list")
+    public Result<List<SysMenu>> list() {
+        List<SysMenu> list = sysMenuService.list();
+        return Result.success(list);
+    }
+
+    /**
+     * 根据ID查询菜单表
+     */
+    @GetMapping("/{id}")
+    public Result<SysMenu> getById(@PathVariable String id) {
+        SysMenu sysMenu = sysMenuService.getById(id);
+        return Result.success(sysMenu);
+    }
+
+    /**
+     * 新增菜单表
+     */
+    @PostMapping
+    public Result<?> save(@RequestBody SysMenu sysMenu) {
+        sysMenuService.save(sysMenu);
+        return Result.success();
+    }
+
+    /**
+     * 修改菜单表
+     */
+    @PutMapping
+    public Result<?> update(@RequestBody SysMenu sysMenu) {
+        sysMenuService.update(sysMenu);
+        return Result.success();
+    }
+
+    /**
+     * 删除菜单表
+     */
+    @DeleteMapping("/{id}")
+    public Result<?> delete(@PathVariable String id) {
+        sysMenuService.delete(id);
+        return Result.success();
+    }
 }

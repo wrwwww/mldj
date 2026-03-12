@@ -1,7 +1,5 @@
 package ${packageName}.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.time.LocalDateTime;
 <#list columns as column>
@@ -18,17 +16,16 @@ import java.math.BigDecimal;
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss")}
  */
 @Data
-@TableName("${tableName}")
-public class ${entityName} {
+public class ${entityName}UpdateForm {
 
 <#list columns as column>
+
+<#if column.showInUpdate>
     /**
-     * ${column.comment!column.label}
-     */
-<#if column.primaryKey>
-    @TableId
-</#if>
+    * ${column.comment!column.label}
+    */
     private ${column.javaType} ${column.label};
+</#if>
 
 </#list>
 }

@@ -5,6 +5,7 @@ import org.ml.mldj.common.utils.Result;
 import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
 import org.ml.mldj.model.system.dto.SysUserQuery;
+import org.ml.mldj.model.system.dto.SysUserUpdateForm;
 import org.ml.mldj.model.system.entity.SysUser;
 import org.ml.mldj.system.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class SysUserController {
      * 新增用户表
      */
     @PostMapping
-    public Result<String> save(@RequestBody SysUser sysUser) {
+    public Result<String> save(@RequestBody SysUserUpdateForm sysUser) {
         sysUserService.save(sysUser);
         return Result.success();
     }
@@ -61,7 +62,7 @@ public class SysUserController {
      * 修改用户表
      */
     @PutMapping
-    public Result<?> update(@RequestBody SysUser sysUser) {
+    public Result<?> update(@RequestBody SysUserUpdateForm sysUser) {
         sysUserService.update(sysUser);
         return Result.success();
     }

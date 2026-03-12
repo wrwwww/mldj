@@ -21,6 +21,6 @@
         </foreach>
         AND m.status = 1
         AND m.is_deleted = 0
-        ORDER BY m.parent_id, m.sort, m.id
+
     </select>
 </mapper>

@@ -62,8 +62,8 @@ public class SysRoleController {
     /**
      * 分页查询角色表
      */
-    @GetMapping("/page")
-    public Result<PageVO<SysRole>> page(PageQuery<SysRole> pageQuery) {
+    @PostMapping("/page")
+    public Result<PageVO<SysRole>> page(@RequestBody PageQuery<SysRoleQuery> pageQuery) {
 
         return Result.success(sysRoleService.page(pageQuery));
     }

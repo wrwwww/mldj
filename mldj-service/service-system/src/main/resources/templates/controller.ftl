@@ -20,7 +20,7 @@ public class ${entityName}Controller {
     private ${entityName}Service ${entityName?uncap_first}Service;
 
     /**
-     * 分页查询${title}
+     * 分页查询
      */
     @GetMapping("/page")
     public Result<PageResult<${entityName}>> page(
@@ -34,11 +34,19 @@ public class ${entityName}Controller {
         return Result.success(result);
     }
 
-    /**
+        /**
+        * 分页查询${title}
+        */
+        @PostMapping("/page")
+        public Result<PageVO<${entityName}>> page(@RequestBody PageQuery<${entityName}Query> pageQuery) {
+            return Result.success(${entityName?uncap_first}Service.page(pageQuery));
+        }
+
+        /**
      * ${title}列表
      */
     @GetMapping("/list")
-    public Result<List<${entityName}>> list() {
+    public Result<List<${entityName}VO>> list() {
         List<${entityName}> list = ${entityName?uncap_first}Service.list();
         return Result.success(list);
     }
@@ -47,7 +55,7 @@ public class ${entityName}Controller {
      * 根据ID查询${title}
      */
     @GetMapping("/{id}")
-    public Result<${entityName}> getById(@PathVariable String id) {
+    public Result<${entityName}VO> getById(@PathVariable String id) {
         ${entityName} ${entityName?uncap_first} = ${entityName?uncap_first}Service.getById(id);
         return Result.success(${entityName?uncap_first});
     }
@@ -56,7 +64,7 @@ public class ${entityName}Controller {
      * 新增${title}
      */
     @PostMapping
-    public Result<?> save(@RequestBody ${entityName} ${entityName?uncap_first}) {
+    public Result<?> save(@RequestBody ${entityName}InsertForm ${entityName?uncap_first}) {
         ${entityName?uncap_first}Service.save(${entityName?uncap_first});
         return Result.success();
     }
@@ -65,7 +73,7 @@ public class ${entityName}Controller {
      * 修改${title}
      */
     @PutMapping
-    public Result<?> update(@RequestBody ${entityName} ${entityName?uncap_first}) {
+    public Result<?> update(@RequestBody ${entityName}UpdateForm ${entityName?uncap_first}) {
         ${entityName?uncap_first}Service.update(${entityName?uncap_first});
         return Result.success();
     }

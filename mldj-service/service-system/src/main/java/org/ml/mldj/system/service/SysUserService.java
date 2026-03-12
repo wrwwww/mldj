@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.ml.mldj.model.common.PageQuery;
 import org.ml.mldj.model.common.PageVO;
+import org.ml.mldj.model.system.dto.SysUserUpdateForm;
 import org.ml.mldj.model.system.entity.SysUser;
+import org.ml.mldj.system.mapper.SysRoleMapper;
 import org.ml.mldj.system.mapper.SysUserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,7 @@ public class SysUserService {
 
     @Autowired
     SysUserMapper sysUserMapper;
+
 
     /**
      * 分页查询用户
@@ -44,8 +48,13 @@ public class SysUserService {
     /**
      * 修改用户表
      */
-    public void update(SysUser sysUser) {
-        sysUserMapper.updateById(sysUser);
+    public void update(SysUserUpdateForm sysUser) {
+        sysUserMapper.delUserRole(sysUser.getId());
+        sysUserMapper.updateUserRole(sysUser.getId(), sysUser.getRoleIds());
+        SysUser sysUser1 = new SysUser();
+        BeanUtils.copyProperties(sysUser, sysUser1);
+        sysUserMapper.updateById(sysUser1);
+
     }
 
     /**
@@ -60,8 +69,12 @@ public class SysUserService {
     /**
      * 新增用户表
      */
-    public boolean save(SysUser sysUser) {
-        return sysUserMapper.insert(sysUser) > 0;
+    public boolean save(SysUserUpdateForm sysUser) {
+        SysUser sysUser1 = new SysUser();
+        BeanUtils.copyProperties(sysUser, sysUser1);
+        sysUserMapper.insert(sysUser1);
+        sysUserMapper.updateUserRole(sysUser.getId(), sysUser.getRoleIds());
+        return true;
     }
 
     /**
