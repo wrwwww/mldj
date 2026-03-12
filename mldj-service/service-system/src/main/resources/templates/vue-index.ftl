@@ -62,15 +62,26 @@ const {
   },
 })
 
-const searchColumns = [
+const searchColumns =computed<ProSearchFormColumns<ListSearchParams>>(() => {
+    return [
 <#list searchColumns as column>
-  {
-    title: '${column.label}',
-    key: '${column.fieldName}',
-    field: '${column.formType}',
-  },
+    <#if column.showInSearch>
+        {
+            title:  $t('${column.label}'),
+            path: '${column.fieldName}',
+            <#if column.formType=="select">
+                field: '${column.formType}',
+            fieldProps: () => {
+            return {
+            options: translateDict(${column.dictCode}),
+        }
+        },
+            </#if>
+        },
+    </#if>
+
 </#list>
-]
+)]}
 
 const tableColumns: ProDataTableColumns<${entityName}> = [
 <#list listColumns as column>

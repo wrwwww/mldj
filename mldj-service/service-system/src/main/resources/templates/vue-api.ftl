@@ -2,6 +2,17 @@ import type { SetOptional } from "type-fest";
 import type { ${entityName} } from "./types";
 import http from "@/utils/axios";
 
+export interface ListSearchParams {
+
+<#list searchColumns as column>
+   <#if searchColumns.showInSearch>
+       ${column.fieldName}: ${column.tsType};
+   </#if>
+</#list>
+}
+
+
+
 export class Api {
   /** ${title}分页 */
   static page(

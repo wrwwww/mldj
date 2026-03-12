@@ -64,6 +64,12 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         return result;
     }
 
+    /**
+     * 生成前端代码
+     * @param config
+     * @return
+     * @throws Exception
+     */
     private Map<String, String> generateFrontend(GenConfig config) throws Exception {
         Map<String, String> frontend = new HashMap<>();
 
@@ -74,6 +80,7 @@ public class GenConfigService extends ServiceImpl<GenConfigMapper, GenConfig> {
         data.put("routePath", config.getRoutePath());
         data.put("moduleName", config.getModuleName());
 
+        data.put("columns",config.getColumns());
         // 生成 index.vue
         Template indexTemplate = freeMarkerConfig.getTemplate("vue-index.ftl");
         frontend.put("index.vue", renderTemplate(indexTemplate, data));

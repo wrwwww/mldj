@@ -17,7 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
         }
 )
 public class ServiceSystemApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(ServiceSystemApplication.class, args);
+    public static void main(String[] args){
+            SpringApplication.run(ServiceSystemApplication.class, args);
     }
 }
