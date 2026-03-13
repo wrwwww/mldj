@@ -49,17 +49,17 @@ public class SysRoleService {
             for (Field field : filters.getClass().getDeclaredFields()) {
                 try {
                     field.setAccessible(true);
-                    String o = (String)field.get(filters);
+                    String o = (String) field.get(filters);
                     if (!Strings.isNullOrEmpty(o)) {
                         QueryCondition annotation = field.getAnnotation(QueryCondition.class);
-                        if (annotation!=null){
-                            switch (annotation.type()){
+                        if (annotation != null) {
+                            switch (annotation.type()) {
                                 case EQ -> {
-                                    queryWrapper.eq(field.getName(),o);
+                                    queryWrapper.eq(field.getName(), o);
                                 }
 
                                 case LIKE -> {
-                                    queryWrapper.like(field.getName(),o);
+                                    queryWrapper.like(field.getName(), o);
                                 }
 
                                 case GT -> {
@@ -170,5 +170,9 @@ public class SysRoleService {
 
     public int removeBatchByIds(List<Long> idList) {
         return sysRoleMapper.deleteByIds(idList);
+    }
+
+    public List<Long> menuIds(String roleId) {
+        return sysRoleMapper.queryMenuIdsByRoleId(roleId);
     }
 }

@@ -8,6 +8,7 @@ import org.ml.mldj.model.system.entity.SysMenu;
 import org.ml.mldj.model.system.vo.AssginMenuVo;
 import org.ml.mldj.model.system.vo.MenuTreeVO;
 import org.ml.mldj.system.service.SysMenuService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,9 +41,6 @@ public class SysMenuController {
     }
 
 
-
-
-
     @GetMapping("/findNodes")
     public List<SysMenu> findNodes() {
         return sysMenuService.list();
@@ -62,6 +60,13 @@ public class SysMenuController {
 //        List<MenuTreeVO> tree = sysMenuService.buildMenuTree(menus);
 //        return Result.success(tree);
 //    }
+    @GetMapping("/tree")
+    public Result<List<MenuTreeVO>> tree() {
+        List<SysMenu> menus = sysMenuService.list();
+        List<MenuTreeVO> tree = sysMenuService.buildMenuTree(menus);
+        return Result.success(tree);
+    }
+
     /**
      * 分页查询菜单表
      */
@@ -92,8 +97,11 @@ public class SysMenuController {
      * 新增菜单表
      */
     @PostMapping
-    public Result<?> save(@RequestBody SysMenu sysMenu) {
-        sysMenuService.save(sysMenu);
+    public Result<?> save(@RequestBody MenuTreeVO sysMenu) {
+        SysMenu sysMenu1 = new SysMenu();
+        BeanUtils.copyProperties(sysMenu, sysMenu1);
+        BeanUtils.copyProperties(sysMenu.getMeta(), sysMenu1);
+        sysMenuService.save(sysMenu1);
         return Result.success();
     }
 
@@ -101,8 +109,12 @@ public class SysMenuController {
      * 修改菜单表
      */
     @PutMapping
-    public Result<?> update(@RequestBody SysMenu sysMenu) {
-        sysMenuService.update(sysMenu);
+    public Result<?> update(@RequestBody MenuTreeVO sysMenu) {
+        SysMenu sysMenu1 = new SysMenu();
+        BeanUtils.copyProperties(sysMenu, sysMenu1);
+        BeanUtils.copyProperties(sysMenu.getMeta(), sysMenu1);
+
+        sysMenuService.update(sysMenu1);
         return Result.success();
     }
 

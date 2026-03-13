@@ -17,7 +17,7 @@ public class PageQuery<T> extends PageRequest {
      * 转换为MyBatis-Plus分页对象
      */
     public <E> Page<E> toPage() {
-        return new Page<>(getSafePageNum(), getSafePageNum());
+        return new Page<>(getSafePageNum(), getSafePageSize());
     }
 
     /**

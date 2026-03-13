@@ -13,6 +13,8 @@ import org.ml.mldj.system.mapper.SysUserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -66,12 +68,16 @@ public class SysUserService {
         return sysUserMapper.selectOne(wrapper);
     }
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
     /**
      * 新增用户表
      */
     public boolean save(SysUserUpdateForm sysUser) {
         SysUser sysUser1 = new SysUser();
+        String encode = bCryptPasswordEncoder.encode(sysUser.getPassword());
         BeanUtils.copyProperties(sysUser, sysUser1);
+        sysUser1.setPassword(encode);
         sysUserMapper.insert(sysUser1);
         sysUserMapper.updateUserRole(sysUser.getId(), sysUser.getRoleIds());
         return true;

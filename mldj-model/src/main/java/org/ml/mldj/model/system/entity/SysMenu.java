@@ -45,7 +45,7 @@ public class SysMenu implements Serializable {
      * 菜单名称
      */
     @Schema(description = "菜单名称")
-    private String name;
+    private String title;
 
     /**
      * 菜单类型：1-目录，2-菜单，3-按钮

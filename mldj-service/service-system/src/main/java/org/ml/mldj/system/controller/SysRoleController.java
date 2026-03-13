@@ -105,6 +105,10 @@ public class SysRoleController {
         return Result.success();
     }
 
+    @GetMapping("/menuIds/{roleId}")
+    public Result<?> queryMenuIdsByRoleId(@PathVariable("roleId") String roleId){
+        return Result.success(sysRoleService.menuIds(roleId));
+    }
 
 
 

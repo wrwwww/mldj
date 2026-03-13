@@ -15,12 +15,18 @@
         SELECT DISTINCT m.*
         FROM sys_menu m
         INNER JOIN sys_role_menu rm ON m.id = rm.menu_id
-        WHERE rm.role_id IN
-        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
-            #{roleId}
-        </foreach>
-        AND m.status = 1
-        AND m.is_deleted = 0
-
+        <where>
+            <if test="roleIds != null and roleIds.size() > 0">
+                rm.role_id IN
+                <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                    #{roleId}
+                </foreach>
+            </if>
+            <if test="roleIds == null or roleIds.size() == 0">
+                AND 1=0  <!-- 没有角色时返回空结果 -->
+            </if>
+            AND m.status = 1
+            AND m.is_deleted = 0
+        </where>
     </select>
 </mapper>
